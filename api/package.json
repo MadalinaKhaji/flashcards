@@ -1,0 +1,22 @@
+{
+  "name": "api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "start": "nodemon server.js",
+    "test": "jasmine",
+    "coverage": "nyc npm run test"
+  },
+  "keywords": [],
+  "author": "maddie",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "jasmine": "^3.5.0",
+    "nodemon": "^2.0.4",
+    "nyc": "^15.0.1"
+  }
+}
