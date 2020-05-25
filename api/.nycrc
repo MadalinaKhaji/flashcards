@@ -1,0 +1,10 @@
+{
+    "all": true,
+    "check-coverage": true,
+    "include": [
+        "components/**/*.js"
+    ], 
+    "exclude": [
+        "**/*.spec.js"
+    ]
+}
