@@ -8,7 +8,8 @@ const { validateToken } = require('../auth/auth.validator');
 
 router.post('/', userController.createUser);
 
-router.get('/', validateToken, userController.getUsers);
+// router.get('/', validateToken, userController.getUsers);
+router.get('/', userController.getUsers);
 
 router.get('/:id', validateToken, userController.getUserById);
 

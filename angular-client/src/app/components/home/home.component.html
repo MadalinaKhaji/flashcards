@@ -1,0 +1,15 @@
+<div class="container">
+  <h1>
+    Welcome to Flashcards
+    <span class="material-icons"> eco </span>
+  </h1>
+
+  <nav>
+    <a (click)="toggleEditor('login')">Login</a>
+    <a (click)="toggleEditor('register')">Register</a>
+  </nav>
+
+  <app-login *ngIf="showLoginEditor"></app-login>
+
+  <app-register *ngIf="showRegisterEditor"></app-register>
+</div>

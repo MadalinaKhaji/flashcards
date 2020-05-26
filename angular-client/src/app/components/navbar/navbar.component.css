@@ -1,0 +1,37 @@
+nav {
+  padding: 1rem 4rem;
+  background-color: #4f9d69;
+  display: grid;
+  grid-template-columns: auto auto;
+  align-items: center;
+}
+nav header {
+  grid-column: 1;
+  grid-row: 1;
+  justify-self: start;
+  color: #000;
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+nav ul {
+  grid-column: 2;
+  grid-row: 1;
+  justify-self: end;
+  list-style: none;
+}
+
+nav ul li {
+  display: inline-block;
+  margin: 0.75rem;
+}
+
+nav ul li a {
+  color: #bcffdb;
+  font-size: 1.25rem;
+  text-decoration: none;
+}
+
+nav ul li a:hover {
+  color: #68d89b;
+}
