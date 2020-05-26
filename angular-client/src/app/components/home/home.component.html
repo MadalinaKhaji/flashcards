@@ -4,7 +4,7 @@
     <span class="material-icons"> eco </span>
   </h1>
 
-  <nav>
+  <nav *ngIf='!status'>
     <a (click)="toggleEditor('login')">Login</a>
     <a (click)="toggleEditor('register')">Register</a>
   </nav>

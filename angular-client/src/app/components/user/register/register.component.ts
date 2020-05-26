@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { Validators } from '@angular/forms';
+import { AuthService } from './../../../services/auth.service';
 
 @Component({
   selector: 'app-register',
@@ -17,18 +18,22 @@ export class RegisterComponent implements OnInit {
     password: ['', Validators.required]
   });
 
-  constructor(private formBuilder: FormBuilder) { }
+  constructor(private formBuilder: FormBuilder, private authService: AuthService) { }
 
   ngOnInit(): void {
   }
 
   register() {
-    console.log('registering..')
-  }
+    let firstName = this.registerForm.value.firstName;
+    let lastName = this.registerForm.value.lastName;
+    let username = this.registerForm.value.username;
+    let email = this.registerForm.value.email;
+    let password = this.registerForm.value.password;
 
-  onSubmit() {
-    // ?
-    console.warn(this.registerForm.value);
+    if (firstName && lastName && username && email && password) {
+      this.authService.register(firstName, lastName, username, email, password).subscribe(() => {
+        console.log('User registered succesfully..');
+      });
+    }
   }
-
 }

@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
+import { FlashcardsService } from './../../services/flashcards.service';
+
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -7,9 +9,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DashboardComponent implements OnInit {
 
-  constructor() { }
+  constructor(private flashcardsService: FlashcardsService) { }
 
   ngOnInit(): void {
+    this.flashcardsService.getUsers().subscribe(res => {
+      console.log(res);
+    });
   }
 
 }

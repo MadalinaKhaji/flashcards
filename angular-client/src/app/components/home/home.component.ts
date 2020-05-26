@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { AuthService } from './../../services/auth.service';
 
 export type EditorType = 'login' | 'register';
 
@@ -11,17 +13,20 @@ export class HomeComponent implements OnInit {
 
   editor: EditorType = 'login';
 
-  constructor() { }
+  status: boolean;
+
+  constructor(private router: Router, private authService: AuthService) { }
 
   ngOnInit(): void {
+    this.status = this.authService.isLoggedIn();
   }
 
   get showLoginEditor() {
-    return this.editor === 'login';
+    return this.editor === 'login' && !this.status;
   }
 
   get showRegisterEditor() {
-    return this.editor === 'register';
+    return this.editor === 'register' && !this.status;
   }
 
   toggleEditor(type: EditorType) {
