@@ -3,7 +3,6 @@ const axios = require('axios').default;
 const baseURL = 'http://localhost:3000/api/users';
 
 describe('MyApp API', function () {
-
   let testToken;
   let testId;
 
@@ -25,7 +24,7 @@ describe('MyApp API', function () {
 
   it('should login user with valid email and password', function (done) {
     axios
-      .post('http://localhost:3000/api/users/login', { email: 'john@email.com', password: 'pass123' })
+      .post('http://localhost:3000/api/users/login', { email: 'test@email.com', password: 'test123' })
       .then((response) => {
         expect(response.status).toBe(200);
         testToken = response.data.token;

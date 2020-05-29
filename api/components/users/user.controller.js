@@ -168,7 +168,7 @@ const login = (req, res) => {
         return res.status(400).json({ message: 'Invalid email or password' });
       }
 
-      bcrypt.compare(req.body.password, results.password, (err, result) => {
+      bcrypt.compare(req.body.password, results.Password, (err, result) => {
         if (result) {
           results.password = undefined;
 
