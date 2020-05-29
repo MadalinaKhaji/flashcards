@@ -1,74 +1,86 @@
 const pool = require('../../config/database');
 
-const createUser = (data, callback) => {
-  pool.query(
-    `INSERT INTO users(firstName, lastName, username, email, password) VALUES(?,?,?,?,?)`,
-    [data.firstName, data.lastName, data.username, data.email, data.password],
-    (error, results, fields) => {
-      if (error) {
-        return callback(error);
+const createUser = (data) => {
+  return new Promise((resolve, reject) => {
+    pool.query(
+      `INSERT INTO users(firstName, lastName, username, email, password) VALUES(?,?,?,?,?)`,
+      [data.firstName, data.lastName, data.username, data.email, data.password],
+      (error, results, fields) => {
+        if (error) {
+          return reject(error);
+        }
+        return resolve(results);
       }
-      return callback(null, results);
-    }
-  );
-};
-
-const getUsers = (callback) => {
-  pool.query(`SELECT id, firstName, lastName, username, email FROM users`, [], (error, results, fields) => {
-    if (error) {
-      return callback(error);
-    }
-    return callback(null, results);
+    );
   });
 };
 
-const getUserById = (id, callback) => {
-  pool.query(
-    `SELECT id, firstName, lastName, username, email FROM users WHERE id = ?`,
-    [id],
-    (error, results, fields) => {
+const getAllUsers = () => {
+  return new Promise((resolve, reject) => {
+    pool.query(`SELECT id, firstName, lastName, username, email FROM users`, [], (error, results, fields) => {
       if (error) {
-        return callback(error);
+        return reject(error);
       }
-      return callback(null, results[0]);
-    }
-  );
-};
-
-const getUserByEmail = (email, callback) => {
-  pool.query(`SELECT * FROM users WHERE email = ?`, [email], (error, results, fields) => {
-    if (error) {
-      return callback(error);
-    }
-    return callback(null, results[0]);
+      return resolve(results);
+    });
   });
 };
 
-const updateUserById = (data, callback) => {
-  pool.query(
-    `UPDATE users SET firstName=?, lastName=?, username=?, email=? WHERE id = ?`,
-    [data.firstName, data.lastName, data.username, data.email, data.id],
-    (error, results, fields) => {
-      if (error) {
-        return callback(error);
+const getUserById = (id) => {
+  return new Promise((resolve, reject) => {
+    pool.query(
+      `SELECT id, firstName, lastName, username, email FROM users WHERE id = ?`,
+      [id],
+      (error, results, fields) => {
+        if (error) {
+          return reject(error);
+        }
+        return resolve(results[0]);
       }
-      return callback(null, results);
-    }
-  );
+    );
+  });
 };
 
-const deleteUserById = (id, callback) => {
-  pool.query(`DELETE FROM users WHERE id = ?`, [id], (error, results, fields) => {
-    if (error) {
-      return callback(error);
-    }
-    return callback(null, results);
+const getUserByEmail = (email) => {
+  return new Promise((resolve, reject) => {
+    pool.query(`SELECT * FROM users WHERE email = ?`, [email], (error, results, fields) => {
+      if (error) {
+        return reject(error);
+      }
+      return resolve(results[0]);
+    });
+  });
+};
+
+const updateUserById = (data) => {
+  return new Promise((resolve, reject) => {
+    pool.query(
+      `UPDATE users SET firstName=?, lastName=?, username=?, email=? WHERE id = ?`,
+      [data.firstName, data.lastName, data.username, data.email, data.id],
+      (error, results, fields) => {
+        if (error) {
+          return reject(error);
+        }
+        return resolve(results);
+      }
+    );
+  });
+};
+
+const deleteUserById = (id) => {
+  return new Promise((resolve, reject) => {
+    pool.query(`DELETE FROM users WHERE id = ?`, [id], (error, results, fields) => {
+      if (error) {
+        return reject(error);
+      }
+      return resolve(results);
+    });
   });
 };
 
 module.exports = {
   createUser: createUser,
-  getUsers: getUsers,
+  getAllUsers: getAllUsers,
   getUserById: getUserById,
   getUserByEmail: getUserByEmail,
   updateUserById: updateUserById,

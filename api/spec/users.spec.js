@@ -2,7 +2,8 @@ const axios = require('axios').default;
 
 const baseURL = 'http://localhost:3000/api/users';
 
-describe('Users API', function () {
+describe('MyApp API', function () {
+
   let testToken;
   let testId;
 
@@ -12,11 +13,11 @@ describe('Users API', function () {
         firstName: 'Test',
         lastName: 'Test',
         username: 'test',
-        email: 'test6aaadff87@email.com',
+        email: 'test@email.com',
         password: 'test123',
       })
       .then((response) => {
-        expect(response.status).toEqual(200);
+        expect(response.status).toEqual(201);
         testId = response.data.data.insertId;
         done();
       });
@@ -27,9 +28,7 @@ describe('Users API', function () {
       .post('http://localhost:3000/api/users/login', { email: 'john@email.com', password: 'pass123' })
       .then((response) => {
         expect(response.status).toBe(200);
-        // saving token for further testing purposes
         testToken = response.data.token;
-        console.log(testToken);
         done();
       });
   });

@@ -8,11 +8,11 @@ const { validateToken } = require('../auth/auth.validator');
 
 router.post('/', userController.createUser);
 
-router.get('/', validateToken, userController.getUsers);
+router.get('/', validateToken, userController.getAllUsers);
 
 router.get('/:id', validateToken, userController.getUserById);
 
-router.patch('/', validateToken, userController.updateUser);
+router.patch('/', validateToken, userController.updateUserById);
 
 router.delete('/:id', validateToken, userController.deleteUserById);
 
