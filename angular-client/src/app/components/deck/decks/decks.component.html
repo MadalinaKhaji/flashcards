@@ -1,0 +1,27 @@
+<div class="container">
+  <h2>DECKS</h2>
+  <a routerLink="/deck-add">Add deck</a>
+  <br />
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th scope="col">Deck</th>
+        <th scope="col">Description</th>
+        <th scope="col">Subject</th>
+        <th scope="col">Favorite</th>
+        <th scope="col">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let deck of decks">
+        <td scope="row">{{ deck.Name }}</td>
+        <td scope="row">{{ deck.Description }}</td>
+        <td scope="row">{{ deck.Subject }}</td>
+        <td scope="row">{{ deck.Favorite }}</td>
+        <td scope="row">
+          <a *ngIf="deck.DeckId" [routerLink]="['/deck-detail', deck.DeckId]"> Details</a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

@@ -13,6 +13,10 @@ const createDeck = (req, res) => {
     return res.status(400).json({ message: 'Subject is required' });
   }
 
+  if (!req.body.userId) {
+    return res.status(400).json({ message: 'User Id is required' });
+  }
+
   deckService
     .createDeck(req.body)
     .then((results) => {
@@ -34,7 +38,25 @@ const getDeckById = (req, res) => {
       if (!results) {
         return res.status(404).json({ message: 'Deck not found' });
       }
-      return res.status(200).json({ data: results });
+      return res.status(200).send(results);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+};
+
+const getDecksByUserId = (req, res) => {
+  if (!req.params.id) {
+    return res.status(400).json({ message: 'User id is required' });
+  }
+
+  deckService
+    .getDecksByUserId(req.params.id)
+    .then((results) => {
+      if (!results) {
+        return res.status(404).json({ message: 'Decks not found' });
+      }
+      return res.status(200).send(results);
     })
     .catch((error) => {
       console.log(error);
@@ -90,6 +112,7 @@ const deleteDeckById = (req, res) => {
 module.exports = {
   createDeck: createDeck,
   getDeckById: getDeckById,
+  getDecksByUserId: getDecksByUserId,
   updateDeckById: updateDeckById,
   deleteDeckById: deleteDeckById,
 };

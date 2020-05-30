@@ -1,0 +1,25 @@
+<form [formGroup]="addDeckForm">
+  <label>
+    Name
+    <input type="text" formControlName="name" required />
+  </label>
+
+  <label>
+    Subject
+    <input type="text" formControlName="subject" required />
+  </label>
+
+  <label>
+    Description
+    <input type="text" formControlName="description" required />
+  </label>
+
+  <label>
+    Favorite
+    <input type="text" formControlName="favorite" required />
+  </label>
+
+  <button (click)="addDeck()" [disabled]="!addDeckForm.valid">
+    Add
+  </button>
+</form>

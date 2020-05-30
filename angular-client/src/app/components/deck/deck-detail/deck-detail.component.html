@@ -1,0 +1,11 @@
+<a routerLink="/decks">Back to decks</a>
+<br />
+<h4>Deck details</h4>
+<p>{{ deck.Name }}</p>
+<p>{{ deck.Subject }}</p>
+<p>{{ deck.Description }}</p>
+<p>{{ deck.Favorite }}</p>
+<br />
+<a *ngIf="deck.DeckId" [routerLink]="['/deck-edit', deck.DeckId]">Edit deck</a>
+<br />
+<a *ngIf="deck.DeckId" (click)="deleteDeck(deck.DeckId)">Delete deck</a>

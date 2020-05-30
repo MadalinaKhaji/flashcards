@@ -15,6 +15,10 @@ import { SettingsComponent } from './components/settings/settings.component';
 import { AboutComponent } from './components/about/about.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import { httpInterceptorProviders } from './http-interceptors';
+import { DecksComponent } from './components/deck/decks/decks.component';
+import { DeckAddComponent } from './components/deck/deck-add/deck-add.component';
+import { DeckDetailComponent } from './components/deck/deck-detail/deck-detail.component';
+import { DeckEditComponent } from './components/deck/deck-edit/deck-edit.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +31,11 @@ import { httpInterceptorProviders } from './http-interceptors';
     DashboardComponent,
     SettingsComponent,
     AboutComponent,
-    PageNotFoundComponent
+    PageNotFoundComponent,
+    DecksComponent,
+    DeckAddComponent,
+    DeckDetailComponent,
+    DeckEditComponent
   ],
   imports: [
     BrowserModule,

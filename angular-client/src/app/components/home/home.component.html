@@ -1,10 +1,9 @@
 <div class="container">
   <h1>
-    Welcome to Flashcards
-    <span class="material-icons"> eco </span>
+    Welcome to MyApp
   </h1>
 
-  <nav *ngIf='!status'>
+  <nav *ngIf="!status">
     <a (click)="toggleEditor('login')">Login</a>
     <a (click)="toggleEditor('register')">Register</a>
   </nav>

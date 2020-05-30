@@ -174,6 +174,7 @@ const login = (req, res) => {
 
           const jsontoken = jwt.sign({ result: results }, process.env.SECRET_KEY, {
             expiresIn: '1h',
+            subject: results.UserId + ''
           });
 
           return res.status(200).json({

@@ -10,12 +10,12 @@ import { User } from './../models/user.model';
 })
 export class AuthService {
 
-  flashcardsAPIUrl: string = 'http://localhost:3000/api';
+  myAppAPIUrl: string = 'http://localhost:3000/api';
 
   constructor(private http: HttpClient) { }
 
   login(email: string, password: string) {
-    return this.http.post(`${this.flashcardsAPIUrl}/users/login`, { email: email, password: password });
+    return this.http.post(`${this.myAppAPIUrl}/users/login`, { email: email, password: password });
   }
 
   setSession(loginResult) {
@@ -38,7 +38,7 @@ export class AuthService {
   isLoggedOut() {
     return !this.isLoggedIn();
   }
-  // doesnt work..
+  
   getExpiration() {
     const expiration = localStorage.getItem('expires_at');
     const expiresAt = JSON.parse(expiration);
@@ -46,6 +46,6 @@ export class AuthService {
   }
 
   register(firstName: string, lastName: string, username: string, email: string, password: string) {
-    return this.http.post(`${this.flashcardsAPIUrl}/users`, { firstName: firstName, lastName: lastName, username: username, email: email, password: password });
+    return this.http.post(`${this.myAppAPIUrl}/users`, { firstName: firstName, lastName: lastName, username: username, email: email, password: password });
   }
 }

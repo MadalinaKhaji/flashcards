@@ -6,9 +6,11 @@ const router = express.Router();
 
 const { validateToken } = require('../auth/auth.validator');
 
-router.post('/', deckController.createDeck);
+router.post('/', validateToken, deckController.createDeck);
 
 router.get('/:id', validateToken, deckController.getDeckById);
+
+router.get('/user/:id', validateToken, deckController.getDecksByUserId);
 
 router.patch('/', validateToken, deckController.updateDeckById);
 
