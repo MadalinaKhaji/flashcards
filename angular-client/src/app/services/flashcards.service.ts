@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { catchError, tap, map } from 'rxjs/operators';
 
 import { Deck } from '../models/deck.model';
+import { Flashcard } from '../models/flashcard.model';
 import { error } from 'protractor';
 
 @Injectable({
@@ -50,6 +51,26 @@ export class FlashcardsService {
 
   updateDeckById(name: string, subject: string, description: string, favorite: boolean, id: number) {
     return this.http.patch(`${this.myAppAPIUrl}/decks`, { name: name, subject: subject, description: description, favorite: favorite, deckId: id })
+  }
+
+  getFlashcardsByDeckId(id: number): Observable<Flashcard[]> {
+    return this.http.get<Flashcard[]>(`${this.myAppAPIUrl}/flashcards/deck/${id}`);
+  }
+
+  addFlashcard(note: string, visibility: boolean, formatType: string, sourceURL: string, front: string, back: string, context: string, blank: string, favorite: boolean, tag: string[], deckId: number) {
+    return this.http.post(`${this.myAppAPIUrl}/flashcards`, { note: note, visibility: visibility, formatType: formatType, sourceURL: sourceURL, front: front, back: back, context: context, blank: blank, favorite: favorite, tag: tag, deckId: deckId });
+  }
+
+  getFlashcardById(id): Observable<Flashcard> {
+    return this.http.get<Flashcard>(`${this.myAppAPIUrl}/flashcards/${id}`);
+  }
+
+  deleteFlashcardById(id: number) {
+    return this.http.delete(`${this.myAppAPIUrl}/flashcards/${id}`);
+  }
+
+  updateFlashcardById(note: string, visibility: boolean, formatType: string, sourceURL: string, front: string, back: string, context: string, blank: string, favorite: boolean, tag: string[]) {
+    return this.http.patch(`${this.myAppAPIUrl}/flashcards`, { note: note, visibility: visibility, formatType: formatType, sourceURL: sourceURL, front: front, back: back, context: context, blank: blank, favorite: favorite, tag: tag });
   }
 
 }

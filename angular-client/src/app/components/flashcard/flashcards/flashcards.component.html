@@ -1,0 +1,37 @@
+<div class="container">
+  <h2>Flashcards</h2>
+  <a [routerLink]="['/flashcard-add', id]">Add flashcard</a>
+  <br />
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th scope="col">Front</th>
+        <th scope="col">Back</th>
+        <th scope="col">Context</th>
+        <th scope="col">Blank</th>
+        <th scope="col">Note</th>
+        <th scope="col">Visibility</th>
+        <th scope="col">Favorite</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let flashcard of flashcards">
+        <td scope="row">{{ flashcard.Front }}</td>
+        <td scope="row">{{ flashcard.Back }}</td>
+        <td scope="row">{{ flashcard.Context }}</td>
+        <td scope="row">{{ flashcard.Blank }}</td>
+        <td scope="row">{{ flashcard.Note }}</td>
+        <td scope="row">{{ flashcard.Visibility }}</td>
+        <td scope="row">{{ flashcard.Favorite }}</td>
+        <td scope="row">
+          <a
+            *ngIf="flashcard.FlashcardId"
+            [routerLink]="['/flashcard-detail', flashcard.FlashcardId]"
+          >
+            Details
+          </a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

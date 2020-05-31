@@ -45,11 +45,55 @@ describe('MyApp API Flashcards', function () {
         deckId: 1,
         front: 'Whats good?',
         back: 'I dont know',
-        tags: ['philosophy', 'literature', 'classical art'],
+        tags: ['pfsfehy', 'lefature', 'csefe art'],
       })
       .then((response) => {
         expect(response.status).toEqual(201);
         done();
       });
   }, 20000);
+
+  xit('should post fill in the blank flashcard using valid parameters', function (done) {
+    axios
+      .post(baseURL, {
+        note: 'Some note',
+        visibility: true,
+        formatType: 'text',
+        sourceURL: '',
+        favorite: false,
+        deckId: 1,
+        context: 'The right to is blank',
+        blank: 'left',
+        tags: ['adawhy', 'litafawe', 'dafnessical art'],
+      })
+      .then((response) => {
+        expect(response.status).toEqual(201);
+        done();
+      });
+  }, 20000);
+
+  xit('should NOT post flashcard using invalid parameters', function (done) {
+    axios
+      .post(baseURL, {
+        note: 'XXXXXXXX',
+        visibility: true,
+        formatType: 'text',
+        sourceURL: '',
+        favorite: false,
+        deckId: 1,
+        front: 'Whats good?',
+        tags: ['philosophy', 'literature', 'classical art'],
+      })
+      .catch((error) => {
+        expect(true).toBeTrue();
+        done();
+      });
+  }, 20000);
+
+  xit('should get flashcards by deck id', function (done) {
+    axios.get(`${baseURL}/decks/1`).then((response) => {
+      expect(response.status).toEqual(200);
+      done();
+    });
+  });
 });

@@ -19,7 +19,12 @@
         <td scope="row">{{ deck.Subject }}</td>
         <td scope="row">{{ deck.Favorite }}</td>
         <td scope="row">
-          <a *ngIf="deck.DeckId" [routerLink]="['/deck-detail', deck.DeckId]"> Details</a>
+          <a *ngIf="deck.DeckId" [routerLink]="['/deck-detail', deck.DeckId]">
+            Details
+          </a>
+          <a *ngIf="deck.DeckId" [routerLink]="['/flashcards', deck.DeckId]"
+            >| View Flashcards</a
+          >
         </td>
       </tr>
     </tbody>

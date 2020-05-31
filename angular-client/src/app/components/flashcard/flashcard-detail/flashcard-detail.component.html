@@ -1,0 +1,20 @@
+<a routerLink="/decks">Back to decks</a>
+<br />
+<h4>Flashcard details</h4>
+<p>{{ flashcard.Note }}</p>
+<p>{{ flashcard.Front }}</p>
+<p>{{ flashcard.Back }}</p>
+<p>{{ flashcard.Context }}</p>
+<p>{{ flashcard.Blank }}</p>
+<br />
+<a
+  *ngIf="flashcard.FlashcardId"
+  [routerLink]="['/flashcard-edit', flashcard.FlashcardId]"
+  >Edit flashcard</a
+>
+<br />
+<a
+  *ngIf="flashcard.FlashcardId"
+  (click)="deleteFlashcard(flashcard.FlashcardId)"
+  >Delete flashcard</a
+>

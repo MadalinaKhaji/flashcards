@@ -74,7 +74,7 @@ const createFlashcardUsingTransaction = (data) => {
                 });
               } else {
                 let flashcardId = results.insertId;
-
+                // decision making in the services layer is bad
                 if (data.front && data.back) {
                   connection.query(
                     `INSERT INTO classic_flashcards(FlashcardId, Front, Back) VALUES(?,?,?)`,
@@ -86,6 +86,7 @@ const createFlashcardUsingTransaction = (data) => {
                           return reject(err);
                         });
                       } else {
+                        // code duplication
                         if (data.tags) {
                           let insertTagsQuery = `INSERT INTO flashcard_tags(FlashcardId, Tag) VALUES`;
 
@@ -123,6 +124,61 @@ const createFlashcardUsingTransaction = (data) => {
                       }
                     }
                   );
+                } else if (data.context && data.blank) {
+                  connection.query(
+                    `INSERT INTO fill_in_the_blank_flashcards(FlashcardId, Context, Blank) VALUES(?,?,?)`,
+                    [flashcardId, data.context, data.blank],
+                    (error, results, fields) => {
+                      if (err) {
+                        connection.rollback(function () {
+                          connection.release();
+                          return reject(err);
+                        });
+                      } else {
+                        // code duplication
+                        if (data.tags) {
+                          let insertTagsQuery = `INSERT INTO flashcard_tags(FlashcardId, Tag) VALUES`;
+
+                          for (let i = 0; i < data.tags.length; i++) {
+                            insertTagsQuery += ` (${flashcardId}, '${data.tags[i]}')`;
+
+                            if (i === data.tags.length - 1) {
+                              insertTagsQuery += ';';
+                            } else {
+                              insertTagsQuery += ',';
+                            }
+                          }
+
+                          connection.query(insertTagsQuery, [], (error, results, fields) => {
+                            if (err) {
+                              connection.rollback(function () {
+                                connection.release();
+                                return reject(err);
+                              });
+                            } else {
+                              connection.commit(function (err) {
+                                if (err) {
+                                  connection.rollback(function () {
+                                    connection.release();
+                                    return reject(err);
+                                  });
+                                } else {
+                                  connection.release();
+                                  resolve(flashcardId);
+                                }
+                              });
+                            }
+                          });
+                        }
+                      }
+                    }
+                  );
+                } else {
+                  // flashcard is neither classic or fill in the blank so reject it
+                  connection.rollback(function () {
+                    connection.release();
+                    return reject('Flashcard must be either classic or fill in the blank');
+                  });
                 }
               }
             }
@@ -136,7 +192,7 @@ const createFlashcardUsingTransaction = (data) => {
 const getFlashcardsByDeckId = (id) => {
   return new Promise((resolve, reject) => {
     pool.query(
-      `SELECT flashcards.FlashcardId, Note, Visibility, FormatType, SourceURL, SelfAssesment, Difficulty, LastReviewDate, ReviewInterval, Favorite, Front, Back, Context, Blank, Tag, DeckId FROM flashcards JOIN classic_flashcards ON flashcards.FlashcardId = classic_flashcards.FlashcardId LEFT JOIN fill_in_the_blank_flashcards ON flashcards.FlashcardId = fill_in_the_blank_flashcards.FlashcardId JOIN flashcard_tags ON flashcards.FlashcardId = flashcard_tags.FlashcardId WHERE flashcards.DeckId = ?`,
+      `SELECT flashcards.FlashcardId, Note, Visibility, FormatType, SourceURL, SelfAssesment, Difficulty, LastReviewDate, ReviewInterval, Favorite, Front, Back, Context, Blank, DeckId FROM flashcards LEFT JOIN classic_flashcards ON flashcards.FlashcardId = classic_flashcards.FlashcardId LEFT JOIN fill_in_the_blank_flashcards ON flashcards.FlashcardId = fill_in_the_blank_flashcards.FlashcardId WHERE flashcards.DeckId = ?`,
       [id],
       (error, results, fields) => {
         if (error) {

@@ -1,0 +1,55 @@
+<form [formGroup]="editFlashcardForm">
+  <label>
+    Note
+    <input type="text" formControlName="note" />
+  </label>
+
+  <label>
+    Visibility
+    <input type="text" formControlName="visibility" />
+  </label>
+
+  <label>
+    FormatType
+    <input type="text" formControlName="formatType" required />
+  </label>
+
+  <label>
+    SourceURL
+    <input type="text" formControlName="sourceURL" />
+  </label>
+
+  <label>
+    Front
+    <input type="text" formControlName="front" />
+  </label>
+
+  <label>
+    Back
+    <input type="text" formControlName="back" />
+  </label>
+
+  <label>
+    Context
+    <input type="text" formControlName="context" />
+  </label>
+
+  <label>
+    Blank
+    <input type="text" formControlName="blank" />
+  </label>
+
+  <label>
+    Favorite
+    <input type="text" formControlName="favorite" />
+  </label>
+
+  <label>
+    Tags
+    <input type="text" formControlName="tag" />
+  </label>
+
+  <button (click)="editFlashcard()">
+    Edit
+  </button>
+</form>

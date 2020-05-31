@@ -16,6 +16,7 @@ const createFlashcard = (req, res) => {
     })
     .catch((error) => {
       console.log(error);
+      return;
     });
 
   // Create flashcard without transaction
@@ -94,7 +95,7 @@ const updateFlashcardById = (req, res) => {
     });
 };
 
-const getFlashcardById = (id) => {
+const getFlashcardById = (req, res) => {
   if (!req.params.id) {
     return res.status(400).json({ message: 'Flashcard id is required' });
   }
