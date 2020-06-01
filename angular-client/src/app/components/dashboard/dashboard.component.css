@@ -1,3 +1,13 @@
 .container {
   padding: 1rem 4rem;
+  text-align: center;
+}
+
+.container-study {
+  display: inline-block;
+  margin: 1rem;
+  padding: 2rem;
+  border-radius: 0.75rem;
+  /* background-color: #bcffdb; */
+  background-color: #8dffcd;
 }

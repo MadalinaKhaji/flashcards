@@ -53,6 +53,12 @@ export class FlashcardsService {
     return this.http.patch(`${this.myAppAPIUrl}/decks`, { name: name, subject: subject, description: description, favorite: favorite, deckId: id })
   }
 
+  getFlashcardsByUserId(): Observable<Flashcard[]> {
+    let currentUserId = this.extractUserId();
+
+    return this.http.get<Flashcard[]>(`${this.myAppAPIUrl}/flashcards/user/${currentUserId}`);
+  }
+
   getFlashcardsByDeckId(id: number): Observable<Flashcard[]> {
     return this.http.get<Flashcard[]>(`${this.myAppAPIUrl}/flashcards/deck/${id}`);
   }

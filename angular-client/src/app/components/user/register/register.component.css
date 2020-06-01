@@ -1,3 +1,29 @@
-label {
+form {
+  margin: 1rem;
+  text-align: center;
+}
+
+input {
   display: block;
+  margin-bottom: 1rem;
+  padding: 0.5rem;
+  font-size: 1rem;
+  outline: none;
+}
+
+input:first-child {
+  margin-top: 2rem;
+}
+
+input:last-child {
+  margin-bottom: 0rem;
+}
+
+button {
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  border-radius: 0.75rem;
+  background-color: #68d89b;
+  font-size: 1.25rem;
+  outline: none;
 }

@@ -1,14 +1,10 @@
 <div class="container">
-  <h1>
-    Welcome to MyApp
-  </h1>
-
-  <nav *ngIf="!status">
-    <a (click)="toggleEditor('login')">Login</a>
-    <a (click)="toggleEditor('register')">Register</a>
-  </nav>
-
-  <app-login *ngIf="showLoginEditor"></app-login>
-
-  <app-register *ngIf="showRegisterEditor"></app-register>
+  <div *ngIf="!status" class="wrapper">
+    <nav>
+      <a (click)="toggleEditor('login')">Login</a>
+      <a (click)="toggleEditor('register')">Register</a>
+    </nav>
+    <app-login *ngIf="showLoginEditor"></app-login>
+    <app-register *ngIf="showRegisterEditor"></app-register>
+  </div>
 </div>

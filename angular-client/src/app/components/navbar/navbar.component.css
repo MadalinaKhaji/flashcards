@@ -1,16 +1,17 @@
 nav {
-  padding: 1rem 4rem;
-  background-color: #4f9d69;
   display: grid;
   grid-template-columns: auto auto;
   align-items: center;
+  padding: 1rem 4rem;
+  background-color: #4f9d69;
 }
+
 nav header {
   grid-column: 1;
   grid-row: 1;
   justify-self: start;
-  color: #000;
-  font-size: 2rem;
+  color: #000000;
+  font-size: 1.75rem;
   font-weight: bold;
 }
 
@@ -27,11 +28,11 @@ nav ul li {
 }
 
 nav ul li a {
-  color: #bcffdb;
-  font-size: 1.25rem;
+  color: #ffffff;
+  font-size: 1.15rem;
   text-decoration: none;
 }
 
 nav ul li a:hover {
-  color: #68d89b;
+  color: #000000;
 }

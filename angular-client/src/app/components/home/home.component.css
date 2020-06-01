@@ -1,4 +1,38 @@
 .container {
-  padding: 1.25rem;
+  margin: 1rem;
+  padding: 1rem;
   text-align: center;
+}
+
+.wrapper {
+  display: inline-block;
+  padding: 2rem 1rem 1rem 1rem;
+  border-radius: 0.75rem;
+  background-color: #bee6ce;
+}
+
+.wrapper nav {
+  display: inline-block;
+}
+
+.wrapper nav a {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  background-color: white;
+  font-size: 1.25rem;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.wrapper nav a:first-child {
+  border-radius: 0.75rem 0rem 0rem 0.75rem;
+}
+
+.wrapper nav a:last-child {
+  border-radius: 0rem 0.75rem 0.75rem 0rem;
+  border-left: solid thin #bee6ce;
+}
+
+.wrapper nav a:hover {
+  background-color: #68d89b;
 }

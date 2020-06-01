@@ -23,7 +23,10 @@
             Details
           </a>
           <a *ngIf="deck.DeckId" [routerLink]="['/flashcards', deck.DeckId]"
-            >| View Flashcards</a
+            >| View Flashcards
+          </a>
+          <a *ngIf="deck.DeckId" [routerLink]="['/study-deck', deck.DeckId]"
+            >| Study deck</a
           >
         </td>
       </tr>

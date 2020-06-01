@@ -68,6 +68,19 @@ const getFlashcardsByDeckId = (req, res) => {
     });
 };
 
+const getFlashcardsByUserId = (req, res) => {
+  if (!req.params.id) {
+    return res.status(400).json({ message: 'User id is required' });
+  }
+
+  flashcardService.getFlashcardsByUserId(req.params.id).then((results) => {
+    if (!results) {
+      return res.status(404).json({ message: 'Flashcards not found' });
+    }
+    return res.status(200).send(results);
+  });
+};
+
 const updateFlashcardById = (req, res) => {
   if (!req.body) {
     return res.status(400).json({ message: 'Request body is empty' });
@@ -130,6 +143,7 @@ const deleteFlashcardById = (req, res) => {
 
 module.exports = {
   createFlashcard: createFlashcard,
+  getFlashcardsByUserId: getFlashcardsByUserId,
   getFlashcardsByDeckId: getFlashcardsByDeckId,
   getFlashcardById: getFlashcardById,
   updateFlashcardById: updateFlashcardById,

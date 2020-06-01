@@ -1,13 +1,10 @@
 <form [formGroup]="loginForm">
-    <label>
-        Email
-        <input type="text" formControlName="email" required>
-    </label>
-
-    <label>
-        Password
-        <input type="password" formControlName="password" required>
-    </label>
-
-    <button (click)="login()" [disabled]="!loginForm.valid">Login</button>
+  <input type="text" formControlName="email" placeholder="Email" required />
+  <input
+    type="password"
+    formControlName="password"
+    placeholder="Password"
+    required
+  />
+  <button (click)="login()" [disabled]="!loginForm.valid">Login</button>
 </form>

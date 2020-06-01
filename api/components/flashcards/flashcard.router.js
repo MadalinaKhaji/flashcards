@@ -10,6 +10,8 @@ router.post('/', flashcardController.createFlashcard);
 
 router.get('/:id', validateToken, flashcardController.getFlashcardById);
 
+router.get('/user/:id', validateToken, flashcardController.getFlashcardsByUserId);
+
 router.get('/deck/:id', validateToken, flashcardController.getFlashcardsByDeckId);
 
 router.patch('/', validateToken, flashcardController.updateFlashcardById);

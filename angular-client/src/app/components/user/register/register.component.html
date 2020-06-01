@@ -1,28 +1,33 @@
 <form [formGroup]="registerForm">
-  <label>
-    First Name
-    <input type="text" formControlName="firstName" required />
-  </label>
+  <input
+    type="text"
+    formControlName="firstName"
+    placeholder="First Name"
+    required
+  />
 
-  <label>
-    Last Name
-    <input type="text" formControlName="lastName" required />
-  </label>
+  <input
+    type="text"
+    formControlName="lastName"
+    placeholder="Last Name"
+    required
+  />
 
-  <label>
-    Username
-    <input type="text" formControlName="username" required />
-  </label>
+  <input
+    type="text"
+    formControlName="username"
+    placeholder="Username"
+    required
+  />
 
-  <label>
-    Email
-    <input type="text" formControlName="email" required />
-  </label>
+  <input type="text" formControlName="email" placeholder="Email" required />
 
-  <label>
-    Password
-    <input type="password" formControlName="password" required />
-  </label>
+  <input
+    type="password"
+    formControlName="password"
+    placeholder=" Password"
+    required
+  />
 
   <button (click)="register()" [disabled]="!registerForm.valid">
     Register

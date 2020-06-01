@@ -15,6 +15,8 @@ import { FlashcardsComponent } from './components/flashcard/flashcards/flashcard
 import { FlashcardDetailComponent } from './components/flashcard/flashcard-detail/flashcard-detail.component';
 import { FlashcardAddComponent } from './components/flashcard/flashcard-add/flashcard-add.component';
 import { FlashcardEditComponent } from './components/flashcard/flashcard-edit/flashcard-edit.component';
+import { StudyDeckComponent } from './components/study/study-deck/study-deck.component';
+import { StudySrsComponent } from './components/study/study-srs/study-srs.component';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -29,6 +31,8 @@ const routes: Routes = [
   { path: 'flashcard-detail/:id', component: FlashcardDetailComponent },
   { path: 'flashcard-add/:id', component: FlashcardAddComponent },
   { path: 'flashcard-edit/:id', component: FlashcardEditComponent },
+  { path: 'study-srs', component: StudySrsComponent },
+  { path: 'study-deck/:id', component: StudyDeckComponent },
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: '**', component: PageNotFoundComponent },
 ];

@@ -206,12 +206,16 @@ const getFlashcardsByDeckId = (id) => {
 
 const getFlashcardById = (id) => {
   return new Promise((resolve, reject) => {
-    pool.query(`SELECT * FROM flashcards WHERE flashcards.FlashcardId = ?`, [id], (error, results, fields) => {
-      if (error) {
-        return reject(error);
+    pool.query(
+      `SELECT * FROM flashcards LEFT JOIN classic_flashcards ON flashcards.FlashcardId = classic_flashcards.FlashcardId LEFT JOIN fill_in_the_blank_flashcards ON flashcards.FlashcardId = fill_in_the_blank_flashcards.FlashcardId WHERE flashcards.FlashcardId = ?`,
+      [id],
+      (error, results, fields) => {
+        if (error) {
+          return reject(error);
+        }
+        resolve(results[0]);
       }
-      resolve(results[0]);
-    });
+    );
   });
 };
 
@@ -238,6 +242,21 @@ const getFlashcardTagsById = (id) => {
       }
       resolve(results);
     });
+  });
+};
+
+const getFlashcardsByUserId = (id) => {
+  return new Promise((resolve, reject) => {
+    pool.query(
+      `SELECT * FROM flashcards, decks WHERE flashcards.DeckId = decks.DeckId AND decks.UserId = ?`,
+      [id],
+      (error, results, fields) => {
+        if (error) {
+          reject(error);
+        }
+        resolve(results);
+      }
+    );
   });
 };
 
@@ -284,6 +303,7 @@ module.exports = {
   getFlashcardById: getFlashcardById,
   getClassicFlashcardById: getClassicFlashcardById,
   getFlashcardTagsById: getFlashcardTagsById,
+  getFlashcardsByUserId: getFlashcardsByUserId,
   updateFlashcardById: updateFlashcardById,
   deleteFlashcardById: deleteFlashcardById,
 };
