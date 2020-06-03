@@ -75,8 +75,12 @@ export class FlashcardsService {
     return this.http.delete(`${this.myAppAPIUrl}/flashcards/${id}`);
   }
 
-  updateFlashcardById(note: string, visibility: boolean, formatType: string, sourceURL: string, front: string, back: string, context: string, blank: string, favorite: boolean, tag: string[]) {
-    return this.http.patch(`${this.myAppAPIUrl}/flashcards`, { note: note, visibility: visibility, formatType: formatType, sourceURL: sourceURL, front: front, back: back, context: context, blank: blank, favorite: favorite, tag: tag });
+  updateFlashcardById() {
+    return null;
+  }
+
+  updateFlashcard(flashcard: Flashcard) {
+    return this.http.patch(`${this.myAppAPIUrl}/flashcards`, { note: flashcard.Note, visibility: flashcard.Visibility, formatType: flashcard.FormatType, sourceURL: flashcard.SourceURL, selfAssesment: flashcard.SelfAssesment, favorite: flashcard.Favorite, difficulty: flashcard.Difficulty, lastReviewDate: flashcard.LastReviewDate, reviewInterval: flashcard.ReviewInterval, flashcardId: flashcard.FlashcardId });
   }
 
 }

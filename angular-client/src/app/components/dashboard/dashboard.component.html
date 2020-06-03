@@ -1,7 +1,28 @@
 <div class="container">
   <div class="container-study">
-    <p>You have x flashcards to practice</p>
-    <a routerLink="/study-srs">Study now</a>
+    <p *ngIf="!noOfFlashcardsToReview && !noOfFlashcardsNotYetStudied">
+      Everything is ok
+    </p>
+
+    <p *ngIf="noOfFlashcardsToReview">
+      You have {{ noOfFlashcardsToReview }} flashcards to practice
+    </p>
+
+    <button *ngIf="noOfFlashcardsToReview">
+      Practice flashcards
+    </button>
+
+    <p *ngIf="noOfFlashcardsNotYetStudied">
+      You have {{ noOfFlashcardsNotYetStudied }} new flashcards to study!
+    </p>
+
+    <button *ngIf="noOfFlashcardsNotYetStudied" (click)="initStudy()">
+      Study new flashcards
+    </button>
+  </div>
+
+  <div *ngIf="isAbleToStudyToday">
+    <app-study-srs [flashcards]="newFlashcardsToStudyToday"></app-study-srs>
   </div>
 
   <app-decks></app-decks>

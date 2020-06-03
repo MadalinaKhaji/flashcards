@@ -82,6 +82,8 @@ const getFlashcardsByUserId = (req, res) => {
 };
 
 const updateFlashcardById = (req, res) => {
+  console.log(req.body);
+
   if (!req.body) {
     return res.status(400).json({ message: 'Request body is empty' });
   }
@@ -98,10 +100,7 @@ const updateFlashcardById = (req, res) => {
           message: 'Failed to update flashcard',
         });
       }
-
-      return res.status(200).json({
-        message: 'Flashcard updated succesfully',
-      });
+      return res.status(200).send(results);
     })
     .catch((error) => {
       console.log(error);

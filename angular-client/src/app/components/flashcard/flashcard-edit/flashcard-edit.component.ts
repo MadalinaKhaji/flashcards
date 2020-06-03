@@ -91,10 +91,10 @@ export class FlashcardEditComponent implements OnInit {
     tags.push(tag);
 
     if (formatType) {
-      this.flashcardsService.updateFlashcardById(note, visibility, formatType, sourceURL, front, back, context, blank, favorite, tags).subscribe(() => {
-        console.log('Flashcard updated succesfully');
-        this.router.navigate(['/flashcard-detail', this.flashcard.FlashcardId]);
-      });
+      // this.flashcardsService.updateFlashcardById(note, visibility, formatType, sourceURL, front, back, context, blank, favorite, tags).subscribe(() => {
+      //   console.log('Flashcard updated succesfully');
+      //   this.router.navigate(['/flashcard-detail', this.flashcard.FlashcardId]);
+      // });
     }
   }
 

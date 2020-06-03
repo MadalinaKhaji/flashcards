@@ -263,7 +263,7 @@ const getFlashcardsByUserId = (id) => {
 const updateFlashcardById = (data) => {
   return new Promise((resolve, reject) => {
     pool.query(
-      `UPDATE flashcards SET Note=?, Visibility=?, FormatType=?, SourceURL=?, SelfAssesment=?, Favorite=? WHERE FlashcardId = ?`,
+      `UPDATE flashcards SET Note=?, Visibility=?, FormatType=?, SourceURL=?, SelfAssesment=?, Favorite=?, Difficulty=?, LastReviewDate = ?, ReviewInterval = ? WHERE FlashcardId = ?`,
       [
         data.note,
         data.visibility,
@@ -271,6 +271,9 @@ const updateFlashcardById = (data) => {
         data.sourceURL,
         data.selfAssesment,
         data.favorite,
+        data.difficulty,
+        data.lastReviewDate,
+        data.reviewInterval,
         data.flashcardId,
       ],
       (error, results, fields) => {

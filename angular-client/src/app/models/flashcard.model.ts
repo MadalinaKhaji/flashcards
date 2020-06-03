@@ -6,7 +6,7 @@ export interface Flashcard {
     SourceURL?: string,
     SelfAssesment?: string,
     Difficulty?: number,
-    LastReviewDate?: Date,
+    LastReviewDate?: string,
     ReviewInterval?: number,
     Favorite?: boolean,
     Front?: string,
