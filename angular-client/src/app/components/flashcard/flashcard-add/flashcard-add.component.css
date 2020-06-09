@@ -1,0 +1,98 @@
+.container {
+  margin: 1rem;
+  padding: 1rem;
+  text-align: center;
+}
+
+.wrapper {
+  display: inline-block;
+  padding: 2rem 1rem 1rem 1rem;
+  border-radius: 0.75rem;
+  background-color: #bee6ce;
+}
+
+header {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  background-color: white;
+  border-radius: 0.75rem;
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+
+form {
+  display: grid;
+  grid-template-columns: 2;
+  grid-template-rows: 5;
+  row-gap: 2rem;
+  column-gap: 1rem;
+  justify-items: left;
+  margin: 1rem;
+  margin-top: 2rem;
+  font-size: 1rem;
+}
+
+#boldened {
+  font-weight: bold;
+}
+
+input {
+  padding: 0.5rem;
+  font-size: 1rem;
+  outline: none;
+}
+
+#grid-item-format-type {
+  grid-column-start: 1;
+  grid-column-end: 1;
+  grid-row-start: 1;
+  grid-row-end: 1;
+  align-self: center;
+  font-size: 1rem;
+  padding: 0.5rem 0rem;
+}
+
+#grid-item-format-type input {
+  font-size: 1rem;
+  margin-left: 0.5rem;
+}
+
+#grid-item-source-url {
+  grid-column-start: 2;
+  grid-column-end: 2;
+  grid-row-start: 1;
+  grid-row-end: 1;
+}
+
+#grid-item-flashcard-type {
+  grid-column-start: 1;
+  grid-column-end: span 2;
+  grid-row-start: 2;
+  grid-row-end: 2;
+  align-self: center;
+  justify-self: left;
+  font-size: 1rem;
+}
+
+#grid-item-flashcard-type input {
+  font-size: 1rem;
+  margin-left: 0.5rem;
+}
+
+#grid-item-button {
+  grid-column-start: 1;
+  grid-column-end: span 2;
+  grid-row-start: 5;
+  grid-row-end: 5;
+  align-self: center;
+  justify-self: center;
+}
+
+button {
+  padding: 0.5rem 1rem;
+  border-radius: 0.75rem;
+  background-color: #68d89b;
+  font-size: 1.25rem;
+  outline: none;
+  cursor: pointer;
+}

@@ -6,7 +6,7 @@ const router = express.Router();
 
 const { validateToken } = require('../auth/auth.validator');
 
-router.post('/', flashcardController.createFlashcard);
+router.post('/', validateToken, flashcardController.createFlashcard);
 
 router.get('/:id', validateToken, flashcardController.getFlashcardById);
 

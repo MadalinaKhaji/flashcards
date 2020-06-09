@@ -1,5 +1,5 @@
 export interface Flashcard {
-    FlashcardId: number,
+    FlashcardId?: number,
     Note?: string,
     Visibility?: boolean,
     FormatType: string,

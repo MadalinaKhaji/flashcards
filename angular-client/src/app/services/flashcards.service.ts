@@ -63,8 +63,8 @@ export class FlashcardsService {
     return this.http.get<Flashcard[]>(`${this.myAppAPIUrl}/flashcards/deck/${id}`);
   }
 
-  addFlashcard(note: string, visibility: boolean, formatType: string, sourceURL: string, front: string, back: string, context: string, blank: string, favorite: boolean, tag: string[], deckId: number) {
-    return this.http.post(`${this.myAppAPIUrl}/flashcards`, { note: note, visibility: visibility, formatType: formatType, sourceURL: sourceURL, front: front, back: back, context: context, blank: blank, favorite: favorite, tag: tag, deckId: deckId });
+  addFlashcard(flashcard: Flashcard) {
+    return this.http.post(`${this.myAppAPIUrl}/flashcards`, { note: flashcard.Note, formatType: flashcard.FormatType, sourceURL: flashcard.SourceURL, front: flashcard.Front, back: flashcard.Back, context: flashcard.Context, blank: flashcard.Blank, tags: flashcard.Tag, deckId: flashcard.DeckId });
   }
 
   getFlashcardById(id): Observable<Flashcard> {

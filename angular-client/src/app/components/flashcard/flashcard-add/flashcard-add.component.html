@@ -1,55 +1,93 @@
-<form [formGroup]="addFlashcardForm">
-  <label>
-    Note
-    <input type="text" formControlName="note" />
-  </label>
+<div class="container">
+  <div class="wrapper">
+    <header>Add Flashcard</header>
+    <form [formGroup]="addFlashcardForm" (submit)="addFlashcard()">
+      <div id="grid-item-format-type">
+        <span id="boldened">Format Type</span>
+        <label>
+          <input
+            type="radio"
+            formControlName="formatType"
+            [(ngModel)]="currentFormatType"
+            value="text"
+          />
+          Text
+        </label>
+        <label>
+          <input
+            type="radio"
+            formControlName="formatType"
+            [(ngModel)]="currentFormatType"
+            value="picture"
+          />
+          Picture
+        </label>
+      </div>
 
-  <label>
-    Visibility
-    <input type="text" formControlName="visibility" />
-  </label>
+      <label id="grid-item-source-url">
+        <input
+          type="text"
+          formControlName="sourceURL"
+          placeholder="Source URL"
+          *ngIf="currentFormatType !== 'text'"
+        />
+      </label>
 
-  <label>
-    FormatType
-    <input type="text" formControlName="formatType" required />
-  </label>
+      <div id="grid-item-flashcard-type">
+        <span id="boldened">Flashcard Type</span>
+        <label>
+          <input
+            type="radio"
+            formControlName="flashcardType"
+            [(ngModel)]="currentFlashcardType"
+            value="classic"
+          />
+          Classic
+        </label>
+        <label>
+          <input
+            type="radio"
+            formControlName="flashcardType"
+            [(ngModel)]="currentFlashcardType"
+            value="fillInTheBlank"
+          />
+          Fill in the blank
+        </label>
+      </div>
 
-  <label>
-    SourceURL
-    <input type="text" formControlName="sourceURL" />
-  </label>
+      <label id="grid-item-front" *ngIf="currentFlashcardType === 'classic'">
+        <input type="text" formControlName="front" placeholder="Front" />
+      </label>
 
-  <label>
-    Front
-    <input type="text" formControlName="front" />
-  </label>
+      <label id="grid-item-back" *ngIf="currentFlashcardType === 'classic'">
+        <input type="text" formControlName="back" placeholder="Back" />
+      </label>
 
-  <label>
-    Back
-    <input type="text" formControlName="back" />
-  </label>
+      <label
+        id="grid-item-context"
+        *ngIf="currentFlashcardType === 'fillInTheBlank'"
+      >
+        <input type="text" formControlName="context" placeholder="Context" />
+      </label>
 
-  <label>
-    Context
-    <input type="text" formControlName="context" />
-  </label>
+      <label
+        id="grid-item-blank"
+        *ngIf="currentFlashcardType === 'fillInTheBlank'"
+      >
+        <input type="text" formControlName="blank" placeholder="Blank" />
+      </label>
 
-  <label>
-    Blank
-    <input type="text" formControlName="blank" />
-  </label>
+      <label id="grid-item-note">
+        <input type="text" formControlName="note" placeholder="Note" />
+      </label>
 
-  <label>
-    Favorite
-    <input type="text" formControlName="favorite" />
-  </label>
+      <label id="grid-item-tags">
+        <input type="text" formControlName="tag" placeholder="Tags" />
+      </label>
 
-  <label>
-    Tags
-    <input type="text" formControlName="tag" />
-  </label>
-
-  <button (click)="addFlashcard()">
-    Add
-  </button>
-</form>
+      <button id="grid-item-button" type="button" (click)="addFlashcard()">
+        Add
+      </button>
+    </form>
+  </div>
+</div>
