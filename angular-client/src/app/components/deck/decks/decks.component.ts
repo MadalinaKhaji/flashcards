@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FlashcardsService } from '../../../services/flashcards.service';
+import { FLAService } from '../../../services/fla.service';
 import { Deck } from '../../../models/deck.model';
 
 @Component({
@@ -11,10 +11,10 @@ export class DecksComponent implements OnInit {
 
   decks: Deck[];
 
-  constructor(private flashcardsService: FlashcardsService) { }
+  constructor(private FLAService: FLAService) { }
 
   ngOnInit(): void {
-    this.flashcardsService.getDecksByUserId().subscribe((decks: Deck[]) => {
+    this.FLAService.getDecksByUserId().subscribe((decks: Deck[]) => {
       this.decks = decks;
     });
   }

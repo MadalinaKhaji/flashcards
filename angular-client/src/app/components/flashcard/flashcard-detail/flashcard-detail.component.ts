@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FlashcardsService } from './../../../services/flashcards.service';
+import { FLAService } from './../../../services/fla.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Flashcard } from './../../../models/flashcard.model';
 
@@ -16,27 +16,27 @@ export class FlashcardDetailComponent implements OnInit {
     Visibility: null,
     FormatType: '',
     SourceURL: '',
-    SelfAssesment: '',
+    SelfAssesmentScore: '',
     Difficulty: null,
-    LastReviewDate: null,
-    ReviewInterval: null,
+    LastStudyDate: null,
+    StudyInterval: null,
     Favorite: null,
     Front: '',
     Back: '',
     Context: '',
     Blank: '',
-    Tag: null,
+    Tags: null,
     DeckId: null
   };
 
-  constructor(private flashcardService: FlashcardsService, private router: Router, private route: ActivatedRoute) { }
+  constructor(private FLAService: FLAService, private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.getFlashcardDetails(this.route.snapshot.params['id']);
   }
 
   getFlashcardDetails(id) {
-    this.flashcardService.getFlashcardById(id).subscribe(flashcard => {
+    this.FLAService.getFlashcardById(id).subscribe(flashcard => {
       this.flashcard = flashcard
 
       console.log(this.flashcard);
@@ -44,7 +44,7 @@ export class FlashcardDetailComponent implements OnInit {
   }
 
   deleteFlashcard(id) {
-    this.flashcardService.deleteFlashcardById(id).subscribe(() => {
+    this.FLAService.deleteFlashcardById(id).subscribe(() => {
       console.log('Flashcard deleted succesfully..');
       this.router.navigateByUrl('/dashboard');
     });

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FlashcardsService } from './../../../services/flashcards.service';
+import { FLAService } from './../../../services/fla.service';
 import { Flashcard } from './../../../models/flashcard.model';
 import { ActivatedRoute } from '@angular/router';
 
@@ -14,12 +14,12 @@ export class FlashcardsComponent implements OnInit {
 
   id: number;
 
-  constructor(private flashcardsService: FlashcardsService, private route: ActivatedRoute) { }
+  constructor(private FLAService: FLAService, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.id = this.route.snapshot.params['id'];
 
-    this.flashcardsService.getFlashcardsByDeckId(this.route.snapshot.params['id']).subscribe((flashcards: Flashcard[]) => {
+    this.FLAService.getFlashcardsByDeckId(this.route.snapshot.params['id']).subscribe((flashcards: Flashcard[]) => {
       this.flashcards = flashcards;
 
       console.log(this.flashcards);

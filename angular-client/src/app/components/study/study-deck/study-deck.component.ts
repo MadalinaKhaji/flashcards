@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { FlashcardsService } from '../../../services/flashcards.service';
+import { FLAService } from '../../../services/fla.service';
 import { Flashcard } from '../../../models/flashcard.model';
 
 @Component({
@@ -16,14 +16,14 @@ export class StudyDeckComponent implements OnInit {
   index: number;
   canBeFlipped: boolean;
 
-  constructor(private flashcardsService: FlashcardsService, private route: ActivatedRoute) { }
+  constructor(private FLAService: FLAService, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.getFlashcards(this.route.snapshot.params['id']);
   }
 
   getFlashcards(id) {
-    this.flashcardsService.getFlashcardsByDeckId(id).subscribe(flashcards => {
+    this.FLAService.getFlashcardsByDeckId(id).subscribe(flashcards => {
       this.flashcards = flashcards;
 
       this.start();

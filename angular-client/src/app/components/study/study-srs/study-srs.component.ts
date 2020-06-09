@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { FlashcardsService } from '../../../services/flashcards.service';
+import { FLAService } from '../../../services/fla.service';
 import { Flashcard } from '../../../models/flashcard.model';
 import * as moment from 'moment';
 
@@ -21,7 +21,7 @@ export class StudySrsComponent implements OnInit {
     difficulty: ['', Validators.required]
   });
 
-  constructor(private flashcardsService: FlashcardsService, private formBuilder: FormBuilder) { }
+  constructor(private FLAService: FLAService, private formBuilder: FormBuilder) { }
 
   ngOnInit(): void {
     if (this.flashcards) {
@@ -31,7 +31,7 @@ export class StudySrsComponent implements OnInit {
   }
 
   getFlashcard(id) {
-    this.flashcardsService.getFlashcardById(id).subscribe(flashcard => {
+    this.FLAService.getFlashcardById(id).subscribe(flashcard => {
       this.currentFlashcard = flashcard;
 
       console.log(this.currentFlashcard);
@@ -52,13 +52,13 @@ export class StudySrsComponent implements OnInit {
 
   next() {
     let difficulty = this.ratingsForm.value.difficulty;
-    let latestReviewDate = moment().format("YYYY-MM-DD HH:mm:ss");
+    let latestStudyDate = moment().format("YYYY-MM-DD HH:mm:ss");
 
     console.log(difficulty);
-    console.log(latestReviewDate);
+    console.log(latestStudyDate);
 
     this.currentFlashcard.Difficulty = +difficulty;
-    this.currentFlashcard.LastReviewDate = latestReviewDate;
+    this.currentFlashcard.LastStudyDate = latestStudyDate;
 
     this.updateFlashcard();
 
@@ -77,7 +77,7 @@ export class StudySrsComponent implements OnInit {
   }
 
   updateFlashcard() {
-    this.flashcardsService.updateFlashcard(this.currentFlashcard).subscribe(response => {
+    this.FLAService.updateFlashcard(this.currentFlashcard).subscribe(response => {
       console.log(response)
     });
   }

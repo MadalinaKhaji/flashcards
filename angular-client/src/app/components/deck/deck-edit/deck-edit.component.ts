@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FlashcardsService } from './../../../services/flashcards.service';
+import { FLAService } from './../../../services/fla.service';
 import { Deck } from './../../../models/deck.model';
 
 @Component({
@@ -27,14 +27,14 @@ export class DeckEditComponent implements OnInit {
     favorite: ['']
   });
 
-  constructor(private formBuilder: FormBuilder, private flashcardsService: FlashcardsService, private router: Router, private route: ActivatedRoute) { }
+  constructor(private formBuilder: FormBuilder, private FLAService: FLAService, private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.getDeck(this.route.snapshot.params['id']);
   }
 
   getDeck(id) {
-    this.flashcardsService.getDeckById(id).subscribe(deck => {
+    this.FLAService.getDeckById(id).subscribe(deck => {
       this.deck = deck;
       console.log(this.deck);
       this.updateFormValues(this.deck);
@@ -59,7 +59,7 @@ export class DeckEditComponent implements OnInit {
     favorite = (favorite === 'true');
 
     if (name && subject) {
-      this.flashcardsService.updateDeckById(name, subject, description, favorite, this.deck.DeckId).subscribe(() => {
+      this.FLAService.updateDeckById(name, subject, description, favorite, this.deck.DeckId).subscribe(() => {
         console.log('Deck updated succesfully..');
         this.router.navigate(['/deck-detail', this.deck.DeckId]);
       });

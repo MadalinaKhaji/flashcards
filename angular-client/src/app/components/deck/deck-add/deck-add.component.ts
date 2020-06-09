@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { FlashcardsService } from './../../../services/flashcards.service';
+import { FLAService } from './../../../services/fla.service';
 
 @Component({
   selector: 'app-deck-add',
@@ -16,7 +16,7 @@ export class DeckAddComponent implements OnInit {
     favorite: ['']
   });
 
-  constructor(private formBuilder: FormBuilder, private flashcardsService: FlashcardsService) { }
+  constructor(private formBuilder: FormBuilder, private FLAService: FLAService) { }
 
   ngOnInit(): void {
   }
@@ -29,7 +29,7 @@ export class DeckAddComponent implements OnInit {
     // Converting to boolean
     favorite = (favorite === 'true');
 
-    this.flashcardsService.addDeck(name, subject, description, favorite).subscribe(() => {
+    this.FLAService.addDeck(name, subject, description, favorite).subscribe(() => {
       console.log('Deck added succesfully..');
     });
   }

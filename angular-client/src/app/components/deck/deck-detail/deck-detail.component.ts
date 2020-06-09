@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FlashcardsService } from './../../../services/flashcards.service';
+import { FLAService } from './../../../services/fla.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Deck } from './../../../models/deck.model';
 
@@ -19,20 +19,20 @@ export class DeckDetailComponent implements OnInit {
     UserId: null
   };
 
-  constructor(private flashcardService: FlashcardsService, private router: Router, private route: ActivatedRoute) { }
+  constructor(private FLAService: FLAService, private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.getDeckDetails(this.route.snapshot.params['id']);
   }
 
   getDeckDetails(id) {
-    this.flashcardService.getDeckById(id).subscribe(deck => {
+    this.FLAService.getDeckById(id).subscribe(deck => {
       this.deck = deck;
     });
   }
 
   deleteDeck(id) {
-    this.flashcardService.deleteDeckById(id).subscribe(() => {
+    this.FLAService.deleteDeckById(id).subscribe(() => {
       console.log('Deck deleted succesfully');
       this.router.navigateByUrl('/decks');
     });

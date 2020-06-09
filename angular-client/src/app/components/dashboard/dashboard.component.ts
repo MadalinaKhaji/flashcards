@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FlashcardsService } from '../../services/flashcards.service';
+import { FLAService } from '../../services/fla.service';
 import { Flashcard } from '../../models/flashcard.model';
 import * as moment from 'moment';
 
@@ -17,14 +17,14 @@ export class DashboardComponent implements OnInit {
   newFlashcardsToStudyToday: Flashcard[] = [];
   isAbleToStudyToday: boolean;
 
-  constructor(private flashcardsService: FlashcardsService) { }
+  constructor(private FLAService: FLAService) { }
 
   ngOnInit(): void {
     this.getFlashcards();
   }
 
   getFlashcards() {
-    this.flashcardsService.getFlashcardsByUserId().subscribe(flashcards => {
+    this.FLAService.getFlashcardsByUserId().subscribe(flashcards => {
       this.flashcards = flashcards;
 
       console.log(this.flashcards);
@@ -39,11 +39,11 @@ export class DashboardComponent implements OnInit {
 
     this.flashcards.forEach(flashcard => {
       // If the flashcard hasnt been reviewed before add it to todays flashcards to review 
-      if (flashcard.LastReviewDate === null) {
+      if (flashcard.LastStudyDate === null) {
         noOfFlashcardsNotYetStudied++;
         this.newFlashcardsToStudyToday.push(flashcard);
-      } else if (flashcard.Difficulty && flashcard.LastReviewDate) {
-        let dueDate = this.calculateFlashcardDueDate(flashcard.Difficulty, flashcard.LastReviewDate);
+      } else if (flashcard.Difficulty && flashcard.LastStudyDate) {
+        let dueDate = this.calculateFlashcardDueDate(flashcard.Difficulty, flashcard.LastStudyDate);
         console.log(dueDate);
         // if dueDate is today then add flashcard to the todays flashcards
 
@@ -64,7 +64,7 @@ export class DashboardComponent implements OnInit {
 
   }
 
-  calculateFlashcardDueDate(difficulty, lastReviewDate) {
+  calculateFlashcardDueDate(difficulty, lastStudyDate) {
     // interval of days between now and the next review date
     let reviewInterval = 0;
 
@@ -87,7 +87,7 @@ export class DashboardComponent implements OnInit {
       reviewInterval = 1;
     }
 
-    let dueDate = moment(lastReviewDate, "DD-MM-YYYY").add(reviewInterval, 'd').format("DD-MM-YYYY");
+    let dueDate = moment(lastStudyDate, "DD-MM-YYYY").add(reviewInterval, 'd').format("DD-MM-YYYY");
 
     return dueDate;
   }

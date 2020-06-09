@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { FlashcardsService } from './../../../services/flashcards.service';
 import { ActivatedRoute } from '@angular/router';
+
+import { FLAService } from './../../../services/fla.service';
+
 import { Flashcard } from 'src/app/models/flashcard.model';
 
 @Component({
@@ -26,7 +28,7 @@ export class FlashcardAddComponent implements OnInit {
     tag: ['']
   });
 
-  constructor(private formBuilder: FormBuilder, private flashcardsService: FlashcardsService, private route: ActivatedRoute) { }
+  constructor(private formBuilder: FormBuilder, private FLAService: FLAService, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.currentFormatType = 'text';
@@ -46,11 +48,11 @@ export class FlashcardAddComponent implements OnInit {
       Back: this.addFlashcardForm.value.back,
       Context: this.addFlashcardForm.value.context,
       Blank: this.addFlashcardForm.value.blank,
-      Tag: tags,
+      Tags: tags,
       DeckId: this.route.snapshot.params['id']
     };
 
-    this.flashcardsService.addFlashcard(flashcardToBeAdded).subscribe(() => {
+    this.FLAService.addFlashcard(flashcardToBeAdded).subscribe(() => {
       console.log('Flashcard added succesfully..');
     });
   }

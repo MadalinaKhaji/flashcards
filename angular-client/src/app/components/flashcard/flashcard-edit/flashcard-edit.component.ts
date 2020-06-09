@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FlashcardsService } from './../../../services/flashcards.service';
+import { FLAService } from './../../../services/fla.service';
 import { Flashcard } from './../../../models/flashcard.model';
 
 @Component({
@@ -17,16 +17,16 @@ export class FlashcardEditComponent implements OnInit {
     Visibility: null,
     FormatType: '',
     SourceURL: '',
-    SelfAssesment: '',
+    SelfAssesmentScore: '',
     Difficulty: null,
-    LastReviewDate: null,
-    ReviewInterval: null,
+    LastStudyDate: null,
+    StudyInterval: null,
     Favorite: null,
     Front: '',
     Back: '',
     Context: '',
     Blank: '',
-    Tag: null,
+    Tags: null,
     DeckId: null
   };
 
@@ -43,14 +43,14 @@ export class FlashcardEditComponent implements OnInit {
     tag: ['']
   });
 
-  constructor(private formBuilder: FormBuilder, private flashcardsService: FlashcardsService, private router: Router, private route: ActivatedRoute) { }
+  constructor(private formBuilder: FormBuilder, private FLAService: FLAService, private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.getFlashcard(this.route.snapshot.params['id']);
   }
 
   getFlashcard(id) {
-    this.flashcardsService.getFlashcardById(id).subscribe(flashcard => {
+    this.FLAService.getFlashcardById(id).subscribe(flashcard => {
       this.flashcard = flashcard;
       console.log(this.flashcard);
       this.updateFormValues(this.flashcard);
@@ -68,7 +68,7 @@ export class FlashcardEditComponent implements OnInit {
       context: flashcard.Context,
       blank: flashcard.Blank,
       favorite: flashcard.Favorite,
-      tag: flashcard.Tag
+      tag: flashcard.Tags
     });
   }
 
