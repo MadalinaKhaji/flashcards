@@ -4,45 +4,14 @@ const axios = require('axios').default;
 
 const baseURL = 'http://localhost:3000/api/flashcards';
 
-describe('MyApp API Flashcards', function () {
-  describe('Flashcard Service', function () {
-    const flashcardService = require('./../components/flashcards/flashcard.service');
-
-    xit('should create query', function () {
-      let result = flashcardService.createFlashcardTags(1, ['lasd', 'isasd', 'measdsn']);
-
-      expect(result).toBeFalsy();
-    });
-
-    xit('should create flashcard using transaction', function (done) {
-      let data = {
-        note: 'Transaction note',
-        visibility: true,
-        formatType: 'text',
-        sourceURL: '',
-        favorite: false,
-        deckId: 1,
-        front: 'What is commit?',
-        back: 'Commit is a b.',
-        tags: ['asd', 'wer'],
-      };
-
-      flashcardService.createFlashcardUsingTransaction(data).then((response) => {
-        expect(response).toBe(1);
-        done();
-      });
-    }, 10000);
-  });
-
+describe('FLA API Flashcards', function () {
   it('should post classic flashcard using valid parameters', function (done) {
     axios
       .post(baseURL, {
-        note: 'Some note',
-        visibility: true,
+        note: 'ASTRAty',
         formatType: 'text',
         sourceURL: '',
-        favorite: false,
-        deckId: 1,
+        deckId: 2,
         front: 'Whats good?',
         back: 'I dont know',
         tags: ['pfsfehy', 'lefature', 'csefe art'],
@@ -51,17 +20,49 @@ describe('MyApp API Flashcards', function () {
         expect(response.status).toEqual(201);
         done();
       });
-  }, 20000);
+  });
 
-  xit('should post fill in the blank flashcard using valid parameters', function (done) {
+  it('should post classic flashcard using valid parameters and without tags', function (done) {
+    axios
+      .post(baseURL, {
+        note: 'FFFFFFFy',
+        formatType: 'text',
+        sourceURL: '',
+        deckId: 2,
+        front: 'Whats good?',
+        back: 'I dont know',
+      })
+      .then((response) => {
+        expect(response.status).toEqual(201);
+        done();
+      });
+  });
+
+  it('should NOT post classic flashcard using invalid parameters', function (done) {
+    axios
+      .post(baseURL, {
+        note: 'ImNotSupposedToBeHere',
+        formatType: 'text',
+        sourceURL: '',
+        deckId: 2,
+        front: 'Whats good?',
+      })
+      .then((results) => {
+        // do nothing
+      })
+      .catch((error) => {
+        expect(true).toBeTrue();
+        done();
+      });
+  });
+
+  it('should post fill in the blank flashcard using valid parameters', function (done) {
     axios
       .post(baseURL, {
         note: 'Some note',
-        visibility: true,
         formatType: 'text',
         sourceURL: '',
-        favorite: false,
-        deckId: 1,
+        deckId: 2,
         context: 'The right to is blank',
         blank: 'left',
         tags: ['adawhy', 'litafawe', 'dafnessical art'],
@@ -72,7 +73,7 @@ describe('MyApp API Flashcards', function () {
       });
   }, 20000);
 
-  xit('should NOT post flashcard using invalid parameters', function (done) {
+  it('should NOT post flashcard using invalid parameters', function (done) {
     axios
       .post(baseURL, {
         note: 'XXXXXXXX',
@@ -80,7 +81,7 @@ describe('MyApp API Flashcards', function () {
         formatType: 'text',
         sourceURL: '',
         favorite: false,
-        deckId: 1,
+        deckId: 2,
         front: 'Whats good?',
         tags: ['philosophy', 'literature', 'classical art'],
       })
@@ -90,8 +91,8 @@ describe('MyApp API Flashcards', function () {
       });
   }, 20000);
 
-  xit('should get flashcards by deck id', function (done) {
-    axios.get(`${baseURL}/decks/1`).then((response) => {
+  it('should get flashcards by deck id', function (done) {
+    axios.get(`${baseURL}/deck/2`).then((response) => {
       expect(response.status).toEqual(200);
       done();
     });

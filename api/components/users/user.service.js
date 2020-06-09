@@ -15,17 +15,6 @@ const createUser = (data) => {
   });
 };
 
-const getAllUsers = () => {
-  return new Promise((resolve, reject) => {
-    pool.query(`SELECT UserId, FirstName, LastName, Username, Email FROM users`, [], (error, results, fields) => {
-      if (error) {
-        return reject(error);
-      }
-      return resolve(results);
-    });
-  });
-};
-
 const getUserById = (id) => {
   return new Promise((resolve, reject) => {
     pool.query(
@@ -80,7 +69,6 @@ const deleteUserById = (id) => {
 
 module.exports = {
   createUser: createUser,
-  getAllUsers: getAllUsers,
   getUserById: getUserById,
   getUserByEmail: getUserByEmail,
   updateUserById: updateUserById,

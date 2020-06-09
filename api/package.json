@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "start": "nodemon server.js",
-    "test": "jasmine"
+    "test": "nyc jasmine"
   },
   "keywords": [],
   "author": "maddie",

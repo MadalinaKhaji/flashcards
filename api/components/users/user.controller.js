@@ -71,17 +71,6 @@ const getUserById = (req, res) => {
     });
 };
 
-const getAllUsers = (req, res) => {
-  userService
-    .getAllUsers()
-    .then((results) => {
-      return res.status(200).json({ data: results });
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-};
-
 const updateUserById = (req, res) => {
   if (!req.body) {
     return res.status(400).json({ message: 'Request body is empty' });
@@ -174,7 +163,7 @@ const login = (req, res) => {
 
           const jsontoken = jwt.sign({ result: results }, process.env.SECRET_KEY, {
             expiresIn: '1h',
-            subject: results.UserId + ''
+            subject: results.UserId + '',
           });
 
           return res.status(200).json({
@@ -194,7 +183,6 @@ const login = (req, res) => {
 module.exports = {
   createUser: createUser,
   getUserById: getUserById,
-  getAllUsers: getAllUsers,
   updateUserById: updateUserById,
   deleteUserById: deleteUserById,
   login: login,

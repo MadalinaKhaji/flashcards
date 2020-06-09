@@ -1,206 +1,90 @@
 const pool = require('../../config/database');
 
-const createFlashcard = (data) => {
+const createFlashcard = (data, insertFlashcardTypeQuery, queryArgs) => {
   return new Promise((resolve, reject) => {
-    pool.query(
-      `INSERT INTO flashcards( Note, Visibility, FormatType, SourceURL, Favorite, DeckId) VALUES(?,?,?,?,?,?)`,
-      [data.note, data.visibility, data.formatType, data.sourceURL, data.favorite, data.deckId],
-      (error, results, fields) => {
-        if (error) {
-          return reject(error);
-        }
-        return resolve(results);
-      }
-    );
-  });
-};
-
-const createClassicFlashcard = (id, front, back) => {
-  return new Promise((resolve, reject) => {
-    pool.query(
-      `INSERT INTO classic_flashcards(FlashcardId, Front, Back) VALUES(?,?,?)`,
-      [id, front, back],
-      (error, results, fields) => {
-        if (error) {
-          return reject(error);
-        }
-        return resolve(results);
-      }
-    );
-  });
-};
-
-const createFlashcardTags = (id, tags) => {
-  return new Promise((resolve, reject) => {
-    let insertTagsQuery = `INSERT INTO flashcard_tags(FlashcardId, Tag) VALUES`;
-
-    for (let i = 0; i < tags.length; i++) {
-      insertTagsQuery += ` (${id}, '${tags[i]}')`;
-
-      if (i === tags.length - 1) {
-        insertTagsQuery += ';';
-      } else {
-        insertTagsQuery += ',';
-      }
-    }
-
-    pool.query(insertTagsQuery, [], (error, results, fields) => {
-      if (error) {
-        return reject(error);
-      }
-      return resolve(results);
-    });
-  });
-};
-
-const createFlashcardUsingTransaction = (data) => {
-  return new Promise((resolve, reject) => {
-    pool.getConnection(function (err, connection) {
-      connection.beginTransaction(function (err) {
+    pool.getConnection((err, connection) => {
+      connection.beginTransaction((err) => {
         if (err) {
-          connection.rollback(function () {
+          connection.rollback(() => {
             connection.release();
             return reject(err);
           });
         } else {
           connection.query(
-            `INSERT INTO flashcards( Note, Visibility, FormatType, SourceURL, Favorite, DeckId) VALUES(?,?,?,?,?,?)`,
-            [data.note, data.visibility, data.formatType, data.sourceURL, data.favorite, data.deckId],
-            (error, results, fields) => {
+            `INSERT INTO flashcards( Note, FormatType, SourceURL, DeckId) VALUES(?,?,?,?)`,
+            [data.note, data.formatType, data.formatType === 'text' ? null : data.sourceURL, data.deckId],
+            (err, results, fields) => {
               if (err) {
-                connection.rollback(function () {
+                connection.rollback(() => {
                   connection.release();
                   return reject(err);
                 });
               } else {
-                let flashcardId = results.insertId;
-                // decision making in the services layer is bad
-                if (data.front && data.back) {
-                  connection.query(
-                    `INSERT INTO classic_flashcards(FlashcardId, Front, Back) VALUES(?,?,?)`,
-                    [flashcardId, data.front, data.back],
-                    (error, results, fields) => {
-                      if (err) {
-                        connection.rollback(function () {
-                          connection.release();
-                          return reject(err);
-                        });
-                      } else {
-                        // code duplication
-                        if (data.tags) {
-                          let insertTagsQuery = `INSERT INTO flashcard_tags(FlashcardId, Tag) VALUES`;
+                const flashcardId = results.insertId;
+                // Assign the id of the newly created flashcard to the placeholder id
+                queryArgs[0] = flashcardId;
+                // Insert into either classic or fill in the blank flashcards table
+                connection.query(insertFlashcardTypeQuery, queryArgs, (err, results, fields) => {
+                  if (err) {
+                    connection.rollback(() => {
+                      connection.release();
+                      return reject(err);
+                    });
+                  } else {
+                    if (data.tags) {
+                      let insertTagsQuery = `INSERT INTO flashcard_tags(FlashcardId, Tag) VALUES`;
 
-                          for (let i = 0; i < data.tags.length; i++) {
-                            insertTagsQuery += ` (${flashcardId}, '${data.tags[i]}')`;
+                      for (let i = 0; i < data.tags.length; i++) {
+                        insertTagsQuery += ` (${flashcardId}, '${data.tags[i]}')`;
 
-                            if (i === data.tags.length - 1) {
-                              insertTagsQuery += ';';
-                            } else {
-                              insertTagsQuery += ',';
-                            }
-                          }
+                        if (i === data.tags.length - 1) {
+                          insertTagsQuery += ';';
+                        } else {
+                          insertTagsQuery += ',';
+                        }
+                      }
 
-                          connection.query(insertTagsQuery, [], (error, results, fields) => {
+                      connection.query(insertTagsQuery, [], (err, results, fields) => {
+                        if (err) {
+                          connection.rollback(() => {
+                            connection.release();
+                            return reject(err);
+                          });
+                        } else {
+                          connection.commit((err) => {
                             if (err) {
-                              connection.rollback(function () {
+                              connection.rollback(() => {
                                 connection.release();
                                 return reject(err);
                               });
                             } else {
-                              connection.commit(function (err) {
-                                if (err) {
-                                  connection.rollback(function () {
-                                    connection.release();
-                                    return reject(err);
-                                  });
-                                } else {
-                                  connection.release();
-                                  resolve(flashcardId);
-                                }
-                              });
+                              connection.release();
+                              resolve(results);
                             }
                           });
                         }
-                      }
-                    }
-                  );
-                } else if (data.context && data.blank) {
-                  connection.query(
-                    `INSERT INTO fill_in_the_blank_flashcards(FlashcardId, Context, Blank) VALUES(?,?,?)`,
-                    [flashcardId, data.context, data.blank],
-                    (error, results, fields) => {
-                      if (err) {
-                        connection.rollback(function () {
+                      });
+                    } else {
+                      connection.commit((err) => {
+                        if (err) {
+                          connection.rollback(() => {
+                            connection.release();
+                            return reject(err);
+                          });
+                        } else {
                           connection.release();
-                          return reject(err);
-                        });
-                      } else {
-                        // code duplication
-                        if (data.tags) {
-                          let insertTagsQuery = `INSERT INTO flashcard_tags(FlashcardId, Tag) VALUES`;
-
-                          for (let i = 0; i < data.tags.length; i++) {
-                            insertTagsQuery += ` (${flashcardId}, '${data.tags[i]}')`;
-
-                            if (i === data.tags.length - 1) {
-                              insertTagsQuery += ';';
-                            } else {
-                              insertTagsQuery += ',';
-                            }
-                          }
-
-                          connection.query(insertTagsQuery, [], (error, results, fields) => {
-                            if (err) {
-                              connection.rollback(function () {
-                                connection.release();
-                                return reject(err);
-                              });
-                            } else {
-                              connection.commit(function (err) {
-                                if (err) {
-                                  connection.rollback(function () {
-                                    connection.release();
-                                    return reject(err);
-                                  });
-                                } else {
-                                  connection.release();
-                                  resolve(flashcardId);
-                                }
-                              });
-                            }
-                          });
+                          resolve(results);
                         }
-                      }
+                      });
                     }
-                  );
-                } else {
-                  // flashcard is neither classic or fill in the blank so reject it
-                  connection.rollback(function () {
-                    connection.release();
-                    return reject('Flashcard must be either classic or fill in the blank');
-                  });
-                }
+                  }
+                });
               }
             }
           );
         }
       });
     });
-  });
-};
-
-const getFlashcardsByDeckId = (id) => {
-  return new Promise((resolve, reject) => {
-    pool.query(
-      `SELECT flashcards.FlashcardId, Note, Visibility, FormatType, SourceURL, SelfAssesment, Difficulty, LastReviewDate, ReviewInterval, Favorite, Front, Back, Context, Blank, DeckId FROM flashcards LEFT JOIN classic_flashcards ON flashcards.FlashcardId = classic_flashcards.FlashcardId LEFT JOIN fill_in_the_blank_flashcards ON flashcards.FlashcardId = fill_in_the_blank_flashcards.FlashcardId WHERE flashcards.DeckId = ?`,
-      [id],
-      (error, results, fields) => {
-        if (error) {
-          return reject(error);
-        }
-        resolve(results);
-      }
-    );
   });
 };
 
@@ -219,29 +103,18 @@ const getFlashcardById = (id) => {
   });
 };
 
-const getClassicFlashcardById = (id) => {
+const getFlashcardsByDeckId = (id) => {
   return new Promise((resolve, reject) => {
     pool.query(
-      `SELECT * FROM classic_flashcards WHERE classic_flashcards.FlashcardId = ?`,
+      `SELECT flashcards.FlashcardId, Note, Visibility, FormatType, SourceURL, SelfAssesmentScore, Difficulty, LastStudyDate, StudyInterval, Favorite, Front, Back, Context, Blank, DeckId FROM flashcards LEFT JOIN classic_flashcards ON flashcards.FlashcardId = classic_flashcards.FlashcardId LEFT JOIN fill_in_the_blank_flashcards ON flashcards.FlashcardId = fill_in_the_blank_flashcards.FlashcardId WHERE flashcards.DeckId = ?`,
       [id],
       (error, results, fields) => {
         if (error) {
           return reject(error);
         }
-        resolve(results[0]);
+        resolve(results);
       }
     );
-  });
-};
-
-const getFlashcardTagsById = (id) => {
-  return new Promise((resolve, reject) => {
-    pool.query(`SELECT * FROM flashcard_tags WHERE flashcard_tags.FlashcardId = ?`, [id], (error, results, fields) => {
-      if (error) {
-        return reject(error);
-      }
-      resolve(results);
-    });
   });
 };
 
@@ -263,17 +136,17 @@ const getFlashcardsByUserId = (id) => {
 const updateFlashcardById = (data) => {
   return new Promise((resolve, reject) => {
     pool.query(
-      `UPDATE flashcards SET Note=?, Visibility=?, FormatType=?, SourceURL=?, SelfAssesment=?, Favorite=?, Difficulty=?, LastReviewDate = ?, ReviewInterval = ? WHERE FlashcardId = ?`,
+      `UPDATE flashcards SET Note=?, Visibility=?, FormatType=?, SourceURL=?, SelfAssesmentScore=?, Favorite=?, Difficulty=?, LastStudyDate = ?, StudyInterval = ? WHERE FlashcardId = ?`,
       [
         data.note,
         data.visibility,
         data.formatType,
         data.sourceURL,
-        data.selfAssesment,
+        data.selfAssesmentScore,
         data.favorite,
         data.difficulty,
-        data.lastReviewDate,
-        data.reviewInterval,
+        data.lastStudyDate,
+        data.StudyInterval,
         data.flashcardId,
       ],
       (error, results, fields) => {
@@ -299,13 +172,8 @@ const deleteFlashcardById = (id) => {
 
 module.exports = {
   createFlashcard: createFlashcard,
-  createClassicFlashcard: createClassicFlashcard,
-  createFlashcardTags: createFlashcardTags,
-  createFlashcardUsingTransaction: createFlashcardUsingTransaction,
-  getFlashcardsByDeckId: getFlashcardsByDeckId,
   getFlashcardById: getFlashcardById,
-  getClassicFlashcardById: getClassicFlashcardById,
-  getFlashcardTagsById: getFlashcardTagsById,
+  getFlashcardsByDeckId: getFlashcardsByDeckId,
   getFlashcardsByUserId: getFlashcardsByUserId,
   updateFlashcardById: updateFlashcardById,
   deleteFlashcardById: deleteFlashcardById,

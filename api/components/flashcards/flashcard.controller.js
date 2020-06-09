@@ -9,45 +9,49 @@ const createFlashcard = (req, res) => {
     return res.status(400).json({ message: 'Format type is required' });
   }
 
+  let insertFlashcardTypeQuery;
+  let queryArgs;
+  let placeholderId = null;
+
+  if (req.body.front && req.body.back) {
+    insertFlashcardTypeQuery = `INSERT INTO classic_flashcards(FlashcardId, Front, Back) VALUES(?,?,?)`;
+
+    queryArgs = [placeholderId, req.body.front, req.body.back];
+  } else if (req.body.context && req.body.blank) {
+    insertFlashcardTypeQuery = `INSERT INTO fill_in_the_blank_flashcards(FlashcardId, Context, Blank) VALUES(?,?,?)`;
+
+    queryArgs = [placeholderId, req.body.context, req.body.blank];
+  } else {
+    return res.status(400).json({ message: 'Missing parameters' });
+  }
+
   flashcardService
-    .createFlashcardUsingTransaction(req.body)
+    .createFlashcard(req.body, insertFlashcardTypeQuery, queryArgs)
     .then((results) => {
-      return res.status(201).json({ message: 'Flashcard created succesfully' });
+      return res.status(201).send(results);
     })
     .catch((error) => {
       console.log(error);
-      return;
+      return res.status(500).json({ message: 'Error occurred' });
     });
+};
 
-  // Create flashcard without transaction
-  //   flashcardService
-  //     .createFlashcard(req.body)
-  //     .then((results) => {
-  //       let flashcardId = results.insertId;
+const getFlashcardById = (req, res) => {
+  if (!req.params.id) {
+    return res.status(400).json({ message: 'Flashcard id is required' });
+  }
 
-  //       if (req.body.front && req.body.back) {
-  //         flashcardService
-  //           .createClassicFlashcard(flashcardId, req.body.front, req.body.back)
-  //           .then((results) => {
-  //             if (req.body.tags) {
-  //               flashcardService
-  //                 .createFlashcardTags(flashcardId, req.body.tags)
-  //                 .then((results) => {
-  //                   return res.status(201).json({ message: 'Flashcard created succesfully' });
-  //                 })
-  //                 .catch((error) => {
-  //                   console.log(error);
-  //                 });
-  //             }
-  //           })
-  //           .catch((error) => {
-  //             console.log(error);
-  //           });
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //     });
+  flashcardService
+    .getFlashcardById(req.params.id)
+    .then((results) => {
+      if (!results) {
+        return res.status(404).json({ message: 'Flashcard not found' });
+      }
+      return res.status(200).send(results);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
 };
 
 const getFlashcardsByDeckId = (req, res) => {
@@ -107,24 +111,6 @@ const updateFlashcardById = (req, res) => {
     });
 };
 
-const getFlashcardById = (req, res) => {
-  if (!req.params.id) {
-    return res.status(400).json({ message: 'Flashcard id is required' });
-  }
-
-  flashcardService
-    .getFlashcardById(req.params.id)
-    .then((results) => {
-      if (!results) {
-        return res.status(404).json({ message: 'Flashcard not found' });
-      }
-      return res.status(200).send(results);
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-};
-
 const deleteFlashcardById = (req, res) => {
   if (!req.params.id) {
     return res.status(400).json({ message: 'Flashcard id is required' });
@@ -142,9 +128,9 @@ const deleteFlashcardById = (req, res) => {
 
 module.exports = {
   createFlashcard: createFlashcard,
+  getFlashcardById: getFlashcardById,
   getFlashcardsByUserId: getFlashcardsByUserId,
   getFlashcardsByDeckId: getFlashcardsByDeckId,
-  getFlashcardById: getFlashcardById,
   updateFlashcardById: updateFlashcardById,
   deleteFlashcardById: deleteFlashcardById,
 };

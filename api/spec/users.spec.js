@@ -2,7 +2,7 @@ const axios = require('axios').default;
 
 const baseURL = 'http://localhost:3000/api/users';
 
-xdescribe('MyApp API', function () {
+describe('FLA API Users', function () {
   let testToken;
   let testId;
 
@@ -34,13 +34,6 @@ xdescribe('MyApp API', function () {
 
   it('should get user with valid id and valid token', function (done) {
     axios.get(`${baseURL}/${testId}`, { headers: { Authorization: `Bearer ${testToken}` } }).then((response) => {
-      expect(response.status).toBe(200);
-      done();
-    });
-  });
-
-  it('should get users with valid token', function (done) {
-    axios.get(baseURL, { headers: { Authorization: `Bearer ${testToken}` } }).then((response) => {
       expect(response.status).toBe(200);
       done();
     });

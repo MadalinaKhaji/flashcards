@@ -3,8 +3,8 @@ const pool = require('../../config/database');
 const createDeck = (data) => {
   return new Promise((resolve, reject) => {
     pool.query(
-      `INSERT INTO decks(Name, Description, Subject, Favorite, UserId) VALUES(?,?,?,?,?)`,
-      [data.name, data.description, data.subject, data.favorite, data.userId],
+      `INSERT INTO decks(Name, Description, Subject, UserId) VALUES(?,?,?,?)`,
+      [data.name, data.description, data.subject, data.userId],
       (error, results, fields) => {
         if (error) {
           return reject(error);
