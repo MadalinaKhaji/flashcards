@@ -26,6 +26,7 @@ import { FlashcardEditComponent } from './components/flashcard/flashcard-edit/fl
 import { StudySrsComponent } from './components/study/study-srs/study-srs.component';
 import { StudyActivityComponent } from './components/study/study-activity/study-activity.component';
 import { StudyDeckComponent } from './components/study/study-deck/study-deck.component';
+import { StudyFlashcardsComponent } from './components/study/study-flashcards/study-flashcards.component';
 
 @NgModule({
   declarations: [
@@ -49,7 +50,8 @@ import { StudyDeckComponent } from './components/study/study-deck/study-deck.com
     FlashcardEditComponent,
     StudySrsComponent,
     StudyActivityComponent,
-    StudyDeckComponent
+    StudyDeckComponent,
+    StudyFlashcardsComponent
   ],
   imports: [
     BrowserModule,

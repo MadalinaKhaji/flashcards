@@ -25,6 +25,7 @@ nav ul {
 nav ul li {
   display: inline-block;
   margin: 0.75rem;
+  cursor: pointer;
 }
 
 nav ul li a {

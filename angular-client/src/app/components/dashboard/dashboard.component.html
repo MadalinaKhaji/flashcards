@@ -1,31 +1,53 @@
 <div class="container">
-  <div class="container-study">
-    <p *ngIf="!noOfFlashcardsToReview && !noOfFlashcardsNotYetStudied">
-      Everything is ok
+  <div
+    *ngIf="
+      (noOfFlashcardsToStudyUsingSRS || noOfFlashcardsNotYetStudied) &&
+      !isHidden
+    "
+    class="container-notifications"
+  >
+    <header>Study Notifications</header>
+
+    <p *ngIf="noOfFlashcardsToStudyUsingSRS" class="notification">
+      You have
+      <span class="boldened"
+        >{{ noOfFlashcardsToStudyUsingSRS }} flashcards</span
+      >
+      to study
     </p>
 
-    <p *ngIf="noOfFlashcardsToReview">
-      You have {{ noOfFlashcardsToReview }} flashcards to practice
-    </p>
-
-    <button *ngIf="noOfFlashcardsToReview">
-      Practice flashcards
+    <button
+      *ngIf="noOfFlashcardsToStudyUsingSRS"
+      (click)="initStudy('studyUsingSRS')"
+      type="button"
+    >
+      Study flashcards
     </button>
 
-    <p *ngIf="noOfFlashcardsNotYetStudied">
-      You have {{ noOfFlashcardsNotYetStudied }} new flashcards to study!
+    <p *ngIf="noOfFlashcardsNotYetStudied" class="notification">
+      You have
+      <span class="boldened"
+        >{{ noOfFlashcardsNotYetStudied }} new flashcards</span
+      >
+      to study!
     </p>
 
-    <button *ngIf="noOfFlashcardsNotYetStudied" (click)="initStudy()">
+    <button
+      *ngIf="noOfFlashcardsNotYetStudied"
+      (click)="initStudy('studyNewFlashcards')"
+      type="button"
+    >
       Study new flashcards
     </button>
   </div>
 
-  <div *ngIf="isAbleToStudyToday">
-    <app-study-srs [flashcards]="newFlashcardsToStudyToday"></app-study-srs>
-  </div>
+  <app-study-flashcards
+    *ngIf="isHidden"
+    [flashcards]="selectedFlashcardsToStudyToday"
+    [isSRSEnabled]="isSRSEnabled"
+  ></app-study-flashcards>
 
-  <app-decks></app-decks>
+  <app-decks *ngIf="!isHidden"></app-decks>
 
-  <app-study-activity></app-study-activity>
+  <!-- <app-study-activity *ngIf="!isHidden"></app-study-activity> -->
 </div>

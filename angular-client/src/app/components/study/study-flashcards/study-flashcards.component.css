@@ -1,28 +1,31 @@
 .container {
-  padding: 1rem 4rem;
   text-align: center;
 }
 
-.container-notifications {
+.wrapper {
   display: inline-block;
+}
+
+.flashcard-top {
   margin: 1rem;
   padding: 2rem;
-  border-radius: 0.75rem;
   background-color: #bee6ce;
-}
-
-header {
-  display: inline-block;
-  padding: 0.5rem 1rem;
-  background-color: white;
   border-radius: 0.75rem;
   font-size: 1.25rem;
-  font-weight: bold;
 }
 
-.notification {
-  margin: 2rem 2rem 1rem 2rem;
-  font-size: 1.25rem;
+.flashcard-bottom {
+  margin: 1rem;
+  padding: 2rem;
+  background-color: #bee6ce;
+  border-radius: 0.75rem;
+  font-size: 1rem;
+}
+
+.flashcard-bottom form {
+  margin: 1rem;
+  margin-bottom: 0rem;
+  font-size: 1rem;
 }
 
 .boldened {
@@ -30,6 +33,7 @@ header {
 }
 
 button {
+  margin-top: 1rem;
   padding: 0.5rem 1rem;
   border-radius: 0.75rem;
   background-color: #68d89b;

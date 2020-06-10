@@ -5,3 +5,33 @@
 .wrapper {
   display: inline-block;
 }
+
+.flashcard-top {
+  margin: 1rem;
+  padding: 2rem;
+  background-color: #bee6ce;
+  border-radius: 0.75rem;
+  font-size: 1.25rem;
+}
+
+.flashcard-bottom {
+  margin: 1rem;
+  padding: 2rem;
+  background-color: #bee6ce;
+  border-radius: 0.75rem;
+  font-size: 1rem;
+}
+
+.boldened {
+  font-weight: bold;
+}
+
+button {
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  border-radius: 0.75rem;
+  background-color: #68d89b;
+  font-size: 1.25rem;
+  outline: none;
+  cursor: pointer;
+}

@@ -86,14 +86,16 @@ const getFlashcardsByUserId = (req, res) => {
 };
 
 const updateFlashcardById = (req, res) => {
-  console.log(req.body);
-
   if (!req.body) {
     return res.status(400).json({ message: 'Request body is empty' });
   }
 
   if (!req.body.formatType) {
     return res.status(400).json({ message: 'Format type is required' });
+  }
+
+  if (req.body.difficulty && req.body.lastStudyDate) {
+    req.body.studyInterval = determineStudyInterval(req.body.difficulty, req.body.lastStudyDate);
   }
 
   flashcardService
@@ -124,6 +126,30 @@ const deleteFlashcardById = (req, res) => {
     .catch((error) => {
       console.log(error);
     });
+};
+
+const determineStudyInterval = (difficulty, lastStudyDate) => {
+  let studyInterval = 0;
+
+  if (difficulty === 5) {
+    studyInterval = 13;
+  }
+  if (difficulty === 4) {
+    studyInterval = 8;
+  }
+  if (difficulty === 3) {
+    studyInterval = 5;
+  }
+  if (difficulty === 2) {
+    studyInterval = 3;
+  }
+  if (difficulty === 1) {
+    studyInterval = 2;
+  }
+  if (difficulty === 0) {
+    studyInterval = 1;
+  }
+  return studyInterval;
 };
 
 module.exports = {

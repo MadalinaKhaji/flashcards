@@ -6,5 +6,7 @@
     placeholder="Password"
     required
   />
-  <button (click)="login()" [disabled]="!loginForm.valid">Login</button>
+  <button type="button" (click)="login()" [disabled]="!loginForm.valid">
+    Login
+  </button>
 </form>

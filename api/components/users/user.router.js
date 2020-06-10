@@ -8,7 +8,11 @@ const { validateToken } = require('../auth/auth.validator');
 
 router.post('/', userController.createUser);
 
+router.post('/sessions', validateToken, userController.createStudySession);
+
 router.get('/:id', validateToken, userController.getUserById);
+
+router.get('/settings/:id', validateToken, userController.getSRSByUserId);
 
 router.patch('/', validateToken, userController.updateUserById);
 

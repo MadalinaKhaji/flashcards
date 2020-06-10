@@ -146,7 +146,7 @@ const updateFlashcardById = (data) => {
         data.favorite,
         data.difficulty,
         data.lastStudyDate,
-        data.StudyInterval,
+        data.studyInterval,
         data.flashcardId,
       ],
       (error, results, fields) => {

@@ -27,6 +27,12 @@ export class FLAService {
     }
   }
 
+  getSRSByUserId() {
+    let currentUserId = this.extractUserId();
+
+    return this.http.get(`${this.FLAAPIUrl}/users/settings/${currentUserId}`);
+  }
+
   getDecksByUserId(): Observable<Deck[]> {
     let currentUserId = this.extractUserId();
 
@@ -78,6 +84,12 @@ export class FLAService {
   }
 
   updateFlashcard(flashcard: Flashcard) {
-    return this.http.patch(`${this.FLAAPIUrl}/flashcards`, { note: flashcard.Note, visibility: flashcard.Visibility, formatType: flashcard.FormatType, sourceURL: flashcard.SourceURL, selfAssesment: flashcard.SelfAssesmentScore, favorite: flashcard.Favorite, difficulty: flashcard.Difficulty, lastReviewDate: flashcard.LastStudyDate, reviewInterval: flashcard.StudyInterval, flashcardId: flashcard.FlashcardId });
+    return this.http.patch(`${this.FLAAPIUrl}/flashcards`, { note: flashcard.Note, visibility: flashcard.Visibility, formatType: flashcard.FormatType, sourceURL: flashcard.SourceURL, selfAssesmentScore: flashcard.SelfAssesmentScore, favorite: flashcard.Favorite, difficulty: flashcard.Difficulty, lastStudyDate: flashcard.LastStudyDate, studyInterval: flashcard.StudyInterval, flashcardId: flashcard.FlashcardId });
+  }
+
+  addStudySession(studySessionDate, studiedFlashcardsNo) {
+    let currentUserId = this.extractUserId();
+
+    return this.http.post(`${this.FLAAPIUrl}/users/sessions`, { userId: currentUserId, studySessionDate: studySessionDate, studiedFlashcardsNo: studiedFlashcardsNo });
   }
 }

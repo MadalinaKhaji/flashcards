@@ -1,35 +1,34 @@
 <div class="container">
-  <h2>DECKS</h2>
-  <a routerLink="/deck-add">Add deck</a>
-  <br />
-  <table class="table table-striped">
-    <thead>
-      <tr>
-        <th scope="col">Deck</th>
-        <th scope="col">Description</th>
-        <th scope="col">Subject</th>
-        <th scope="col">Favorite</th>
-        <th scope="col">Action</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let deck of decks">
-        <td scope="row">{{ deck.Name }}</td>
-        <td scope="row">{{ deck.Description }}</td>
-        <td scope="row">{{ deck.Subject }}</td>
-        <td scope="row">{{ deck.Favorite }}</td>
-        <td scope="row">
-          <a *ngIf="deck.DeckId" [routerLink]="['/deck-detail', deck.DeckId]">
-            Details
-          </a>
-          <a *ngIf="deck.DeckId" [routerLink]="['/flashcards', deck.DeckId]"
-            >| View Flashcards
-          </a>
-          <a *ngIf="deck.DeckId" [routerLink]="['/study-deck', deck.DeckId]"
-            >| Study deck</a
-          >
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <div class="wrapper">
+    <nav>
+      <a routerLink="/dashboard">All Decks</a>
+      <a routerLink="/deck-add">Add Deck</a>
+    </nav>
+    <div class="container-decks">
+      <div *ngFor="let deck of decks" class="deck">
+        <p id="grid-item-name">{{ deck.Name }}</p>
+        <p id="grid-item-description">{{ deck.Description }}</p>
+        <a
+          id="grid-item-details"
+          *ngIf="deck.DeckId"
+          [routerLink]="['/deck-detail', deck.DeckId]"
+        >
+          Details
+        </a>
+        <a
+          id="grid-item-flashcards"
+          *ngIf="deck.DeckId"
+          [routerLink]="['/flashcards', deck.DeckId]"
+        >
+          Flashcards
+        </a>
+        <a
+          id="grid-item-study"
+          *ngIf="deck.DeckId"
+          [routerLink]="['/study-deck', deck.DeckId]"
+          >Study Deck</a
+        >
+      </div>
+    </div>
+  </div>
 </div>

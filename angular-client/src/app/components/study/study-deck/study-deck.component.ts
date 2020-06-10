@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FLAService } from '../../../services/fla.service';
 import { Flashcard } from '../../../models/flashcard.model';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-study-deck',
@@ -31,18 +32,17 @@ export class StudyDeckComponent implements OnInit {
   }
 
   start() {
+    this.canBeFlipped = false;
+
     this.index = 0;
 
     this.totalFlashcards = this.flashcards.length;
 
     this.currentFlashcard = this.flashcards[this.index];
 
-    // check visibility - if false then skip card by increasing index and check that index is within bounds 
-    // show progress too 
-
-    this.canBeFlipped = false;
-
-    console.log(this.currentFlashcard)
+    if (this.currentFlashcard.Visibility === false) {
+      this.next();
+    }
   }
 
   flip() {
@@ -53,14 +53,25 @@ export class StudyDeckComponent implements OnInit {
     this.index++;
 
     if (this.index === this.totalFlashcards) {
+      this.canBeFlipped = false;
+
       this.currentFlashcard = null;
 
-      this.canBeFlipped = false;
+      this.addStudySession();
     } else {
-      this.currentFlashcard = this.flashcards[this.index];
-
       this.canBeFlipped = false;
+
+      this.currentFlashcard = this.flashcards[this.index];
     }
+  }
+
+  addStudySession() {
+    let currentTimestamp = moment().unix();
+    let studySessionDate = moment(currentTimestamp * 1000).format("YYYY-MM-DD HH:mm:ss");
+
+    this.FLAService.addStudySession(studySessionDate, this.totalFlashcards).subscribe(results => {
+      console.log('Added session succesfully');
+    });
   }
 
 }

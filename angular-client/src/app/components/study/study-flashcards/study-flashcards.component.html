@@ -1,0 +1,43 @@
+<div class="container">
+  <div class="wrapper">
+    <div *ngIf="!canBeFlipped && currentFlashcard" class="flashcard-top">
+      <p>{{ currentFlashcard.Front }}</p>
+      <p>{{ currentFlashcard.Context }}</p>
+      <button (click)="flip()" type="button">Flip</button>
+    </div>
+    <div *ngIf="canBeFlipped && currentFlashcard" class="flashcard-bottom">
+      <p>{{ currentFlashcard.Back }}</p>
+      <p>{{ currentFlashcard.Blank }}</p>
+      <form *ngIf="isSRSEnabled" [formGroup]="ratingsForm">
+        <span class="boldened"> Difficulty </span> <br /><br />
+        <label
+          ><input type="radio" formControlName="difficulty" value="0" /> 0
+        </label>
+        <label>
+          <input type="radio" formControlName="difficulty" value="1" /> 1
+        </label>
+        <label>
+          <input type="radio" formControlName="difficulty" value="2" /> 2
+        </label>
+        <label>
+          <input type="radio" formControlName="difficulty" value="3" /> 3
+        </label>
+        <label>
+          <input type="radio" formControlName="difficulty" value="4" /> 4
+        </label>
+        <label>
+          <input type="radio" formControlName="difficulty" value="5" /> 5
+        </label>
+        <br />
+        <button type="button" (click)="next()" [disabled]="!ratingsForm.valid">
+          Next
+        </button>
+      </form>
+      <button *ngIf="!isSRSEnabled" click="next()" type="button">Next</button>
+    </div>
+    <div *ngIf="!currentFlashcard">
+      <p>You finished</p>
+      <a routerLink="/dashboard">Back to Dashboard</a>
+    </div>
+  </div>
+</div>

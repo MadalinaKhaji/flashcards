@@ -38,9 +38,7 @@ const createUser = (req, res) => {
       userService
         .createUser(req.body)
         .then((results) => {
-          return res.status(201).json({
-            data: results,
-          });
+          return res.status(201).send(results);
         })
         .catch((error) => {
           console.log(error);
@@ -69,6 +67,20 @@ const getUserById = (req, res) => {
     .catch((error) => {
       console.log(error);
     });
+};
+
+const getSRSByUserId = (req, res) => {
+  if (!req.params.id) {
+    return res.status(400).json({ message: 'User id is required' });
+  }
+
+  userService.getSRSByUserId(req.params.id).then((results) => {
+    if (!results) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    return res.status(200).send(results);
+  });
 };
 
 const updateUserById = (req, res) => {
@@ -180,9 +192,36 @@ const login = (req, res) => {
     });
 };
 
+const createStudySession = (req, res) => {
+  if (!req.body) {
+    return res.status(400).json({ message: 'Request body is empty' });
+  }
+
+  if (!req.body.userId) {
+    return res.status(400).json({ message: 'User id is required' });
+  }
+
+  if (!req.body.studySessionDate) {
+    return res.status(400).json({ message: 'Session date is required' });
+  }
+
+  userService
+    .createStudySession(req.body)
+    .then((results) => {
+      return res.status(201).send(results);
+    })
+    .catch((error) => {
+      console.log(error);
+
+      return res.status(500).send('Error occurred..');
+    });
+};
+
 module.exports = {
   createUser: createUser,
+  createStudySession: createStudySession,
   getUserById: getUserById,
+  getSRSByUserId: getSRSByUserId,
   updateUserById: updateUserById,
   deleteUserById: deleteUserById,
   login: login,

@@ -1,13 +1,17 @@
 <div class="container">
-  <div *ngIf="currentFlashcard" class="wrapper">
-    <p *ngIf="!canBeFlipped">{{ currentFlashcard.Front }}</p>
-    <p *ngIf="!canBeFlipped">{{ currentFlashcard.Context }}</p>
-    <p *ngIf="canBeFlipped">{{ currentFlashcard.Back }}</p>
-    <p *ngIf="canBeFlipped">{{ currentFlashcard.Blank }}</p>
-    <button *ngIf="!canBeFlipped" (click)="flip()">Flip</button>
-    <button *ngIf="canBeFlipped" (click)="next()">Next</button>
+  <div class="wrapper">
+    <div *ngIf="!canBeFlipped && currentFlashcard" class="flashcard-top">
+      <p>{{ currentFlashcard.Front }}</p>
+      <p>{{ currentFlashcard.Context }}</p>
+      <button (click)="flip()" type="button">Flip</button>
+    </div>
+    <div *ngIf="canBeFlipped && currentFlashcard" class="flashcard-bottom">
+      <p>{{ currentFlashcard.Back }}</p>
+      <p>{{ currentFlashcard.Blank }}</p>
+      <button click="next()" type="button">Next</button>
+    </div>
   </div>
-  <div *ngIf="!currentFlashcard" class="wrapper">
+  <div *ngIf="!currentFlashcard">
     <p>You finished</p>
     <a routerLink="/dashboard">Back to Dashboard</a>
   </div>

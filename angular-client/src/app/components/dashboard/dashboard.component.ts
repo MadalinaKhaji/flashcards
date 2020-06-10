@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FLAService } from '../../services/fla.service';
 import { Flashcard } from '../../models/flashcard.model';
+import { UserSettings } from '../../models/user.setting.model';
 import * as moment from 'moment';
 
 @Component({
@@ -8,26 +9,37 @@ import * as moment from 'moment';
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
 })
+
 export class DashboardComponent implements OnInit {
 
   flashcards: Flashcard[];
+  isSRSEnabled: boolean;
+  isHidden: boolean;
+
   noOfFlashcardsNotYetStudied: number;
-  noOfFlashcardsToReview: number;
-  oldFlashcardsToStudyToday: Flashcard[] = [];
+  noOfFlashcardsToStudyUsingSRS: number;
+
+  flashcardsToStudyToday: Flashcard[] = [];
   newFlashcardsToStudyToday: Flashcard[] = [];
-  isAbleToStudyToday: boolean;
+  selectedFlashcardsToStudyToday: Flashcard[] = [];
 
   constructor(private FLAService: FLAService) { }
 
   ngOnInit(): void {
+    this.isHidden = false;
+    this.getSRSStatus();
     this.getFlashcards();
+  }
+
+  getSRSStatus() {
+    this.FLAService.getSRSByUserId().subscribe((results: UserSettings) => {
+      this.isSRSEnabled = results.SRS;
+    });
   }
 
   getFlashcards() {
     this.FLAService.getFlashcardsByUserId().subscribe(flashcards => {
       this.flashcards = flashcards;
-
-      console.log(this.flashcards);
 
       this.checkFlashcardsStatus()
     });
@@ -35,21 +47,21 @@ export class DashboardComponent implements OnInit {
 
   checkFlashcardsStatus() {
     let noOfFlashcardsNotYetStudied = 0;
-    let noOfFlashcardsToReview = 0;
+    let noOfFlashcardsToStudyUsingSRS = 0;
 
     this.flashcards.forEach(flashcard => {
       // If the flashcard hasnt been reviewed before add it to todays flashcards to review 
       if (flashcard.LastStudyDate === null) {
         noOfFlashcardsNotYetStudied++;
         this.newFlashcardsToStudyToday.push(flashcard);
-      } else if (flashcard.Difficulty && flashcard.LastStudyDate) {
-        let dueDate = this.calculateFlashcardDueDate(flashcard.Difficulty, flashcard.LastStudyDate);
+      } else if (this.isSRSEnabled) {
+        let dueDate = this.calculateFlashcardDueDate(flashcard.StudyInterval, flashcard.LastStudyDate);
         console.log(dueDate);
-        // if dueDate is today then add flashcard to the todays flashcards
-
-        if (moment(dueDate).isAfter(moment())) {
-          noOfFlashcardsToReview++;
-          this.oldFlashcardsToStudyToday.push(flashcard);
+        let currentTimestamp = moment().unix();//in seconds
+        let currentDate = moment(currentTimestamp * 1000).format("YYYY-MM-DD HH:mm:ss");
+        if (moment(dueDate).isAfter(currentDate)) {
+          noOfFlashcardsToStudyUsingSRS++;
+          this.flashcardsToStudyToday.push(flashcard);
         }
       }
     });
@@ -58,42 +70,28 @@ export class DashboardComponent implements OnInit {
       this.noOfFlashcardsNotYetStudied = noOfFlashcardsNotYetStudied;
     }
 
-    if (noOfFlashcardsToReview > 0) {
-      this.noOfFlashcardsToReview = noOfFlashcardsToReview;
+    if (noOfFlashcardsToStudyUsingSRS > 0) {
+      this.noOfFlashcardsToStudyUsingSRS = noOfFlashcardsToStudyUsingSRS;
     }
 
   }
 
-  calculateFlashcardDueDate(difficulty, lastStudyDate) {
-    // interval of days between now and the next review date
-    let reviewInterval = 0;
-
-    if (difficulty === 5) {
-      reviewInterval = 13;
-    }
-    if (difficulty === 4) {
-      reviewInterval = 8;
-    }
-    if (difficulty === 3) {
-      reviewInterval = 5;
-    }
-    if (difficulty === 2) {
-      reviewInterval = 3;
-    }
-    if (difficulty === 1) {
-      reviewInterval = 2;
-    }
-    if (difficulty === 0) {
-      reviewInterval = 1;
-    }
-
-    let dueDate = moment(lastStudyDate, "DD-MM-YYYY").add(reviewInterval, 'd').format("DD-MM-YYYY");
+  calculateFlashcardDueDate(studyInterval, lastStudyDate) {
+    let dueDate = moment(lastStudyDate, "YYYY-MM-DD HH:mm:ss").add(studyInterval, 'd').format("YYYY-MM-DD HH:mm:ss");
 
     return dueDate;
   }
 
-  initStudy() {
-    this.isAbleToStudyToday = true;
+  initStudy(option) {
+    if (option === 'studyNewFlashcards') {
+      this.selectedFlashcardsToStudyToday = this.newFlashcardsToStudyToday;
+    } else if (option === 'studyUsingSRS') {
+      this.selectedFlashcardsToStudyToday = this.flashcardsToStudyToday;
+    }
+
+    if (this.selectedFlashcardsToStudyToday) {
+      this.isHidden = true;
+    }
   }
 
 }
