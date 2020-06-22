@@ -16,6 +16,8 @@ router.get('/settings/:id', validateToken, userController.getSRSByUserId);
 
 router.patch('/', validateToken, userController.updateUserById);
 
+router.patch('/settings', validateToken, userController.updateSRSByUserId);
+
 router.delete('/:id', validateToken, userController.deleteUserById);
 
 router.post('/login', userController.login);

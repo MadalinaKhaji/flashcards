@@ -1,8 +1,8 @@
 export interface User {
-    id: number,
-    firstName: string,
-    lastName: string,
-    username: string,
-    email: string,
-    password: string
+    UserId: number,
+    FirstName: string,
+    LastName: string,
+    Username: string,
+    Email: string,
+    SRS: boolean
 }

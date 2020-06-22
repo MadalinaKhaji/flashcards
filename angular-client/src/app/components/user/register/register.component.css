@@ -26,4 +26,12 @@ button {
   background-color: #68d89b;
   font-size: 1.25rem;
   outline: none;
+  cursor: pointer;
+}
+
+i {
+  position: relative;
+  top: 0.15rem;
+  left: 0rem;
+  font-size: 1.25rem;
 }

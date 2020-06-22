@@ -1,20 +1,19 @@
 <nav>
-  <header><span class="material-icons"> build </span> FLA</header>
+  <header><i class="material-icons"> build </i> FLA</header>
   <ul>
-    <li>
-      <a routerLink="/home" routerLinkActive="active">Home</a>
-    </li>
     <li>
       <a *ngIf="status" routerLink="/dashboard" routerLinkActive="active"
         >Dashboard</a
       >
     </li>
-    <li><a routerLink="/about" routerLinkActive="active">About</a></li>
     <li>
       <a *ngIf="status" routerLink="/settings" routerLinkActive="active"
         >Settings
       </a>
     </li>
+    <!-- <li>
+      <a *ngIf="status" routerLink="/about" routerLinkActive="active">About</a>
+    </li> -->
     <li><a *ngIf="status" (click)="logout()">Logout</a></li>
   </ul>
 </nav>

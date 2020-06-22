@@ -15,7 +15,7 @@ describe('FLA API Decks', function () {
         name: 'Testing Deck',
         description: 'A deck for testing',
         subject: 'Testing Techniques',
-        userId: 3
+        userId: 3,
       };
 
       deckService.createDeck(testData).then((result) => {
@@ -38,7 +38,7 @@ describe('FLA API Decks', function () {
         description: 'A deck for testing',
         subject: 'Updated Testing Techniques',
         favorite: true,
-        deckId: testId,
+        deckId: 1,
       };
 
       deckService.updateDeckById(testData).then((result) => {

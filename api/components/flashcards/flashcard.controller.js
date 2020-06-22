@@ -1,4 +1,5 @@
 const flashcardService = require('./flashcard.service');
+const moment = require('moment');
 
 const createFlashcard = (req, res) => {
   if (!req.body) {
@@ -94,9 +95,9 @@ const updateFlashcardById = (req, res) => {
     return res.status(400).json({ message: 'Format type is required' });
   }
 
-  if (req.body.difficulty && req.body.lastStudyDate) {
-    req.body.studyInterval = determineStudyInterval(req.body.difficulty, req.body.lastStudyDate);
-  }
+  // if (req.body.difficulty && req.body.lastStudyDate) {
+  //   req.body.studyInterval = determineStudyInterval(req.body.difficulty, req.body.lastStudyDate);
+  // }
 
   flashcardService
     .updateFlashcardById(req.body)
@@ -150,6 +151,10 @@ const determineStudyInterval = (difficulty, lastStudyDate) => {
     studyInterval = 1;
   }
   return studyInterval;
+};
+
+const fibonacci = (n) => {
+  return n < 1 ? 0 : n <= 2 ? 1 : fibonacci(n - 1) + fibonacci(n - 2);
 };
 
 module.exports = {

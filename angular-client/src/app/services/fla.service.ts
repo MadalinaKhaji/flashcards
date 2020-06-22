@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
+import { User } from '../models/user.model';
 import { Deck } from '../models/deck.model';
 import { Flashcard } from '../models/flashcard.model';
 
@@ -27,10 +28,22 @@ export class FLAService {
     }
   }
 
+  getUserById(): Observable<User> {
+    let currentUserId = this.extractUserId();
+
+    return this.http.get<User>(`${this.FLAAPIUrl}/users/${currentUserId}`);
+  }
+
   getSRSByUserId() {
     let currentUserId = this.extractUserId();
 
     return this.http.get(`${this.FLAAPIUrl}/users/settings/${currentUserId}`);
+  }
+
+  updateSRSByUserId(SRS: boolean) {
+    let currentUserId = this.extractUserId();
+
+    return this.http.patch(`${this.FLAAPIUrl}/users/settings`, { id: currentUserId, SRS: SRS });
   }
 
   getDecksByUserId(): Observable<Deck[]> {
@@ -68,7 +81,18 @@ export class FLAService {
   }
 
   addFlashcard(flashcard: Flashcard) {
-    return this.http.post(`${this.FLAAPIUrl}/flashcards`, { note: flashcard.Note, formatType: flashcard.FormatType, sourceURL: flashcard.SourceURL, front: flashcard.Front, back: flashcard.Back, context: flashcard.Context, blank: flashcard.Blank, tags: flashcard.Tags, deckId: flashcard.DeckId });
+    return this.http.post(`${this.FLAAPIUrl}/flashcards`,
+      {
+        note: flashcard.Note,
+        formatType: flashcard.FormatType,
+        sourceURL: flashcard.SourceURL,
+        front: flashcard.Front,
+        back: flashcard.Back,
+        context: flashcard.Context,
+        blank: flashcard.Blank,
+        tags: flashcard.Tags,
+        deckId: flashcard.DeckId
+      });
   }
 
   getFlashcardById(id): Observable<Flashcard> {

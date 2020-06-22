@@ -1,9 +1,10 @@
 .container {
-  padding: 1rem 4rem;
-  text-align: center;
+  margin: 0 4rem;
+  padding: 1rem;
+  text-align: left;
 }
 
-.container-notifications {
+.wrapper {
   display: inline-block;
   margin: 1rem;
   padding: 2rem;
@@ -20,9 +21,28 @@ header {
   font-weight: bold;
 }
 
-.notification {
-  margin: 2rem 2rem 1rem 2rem;
+.greeting {
+  margin: 1rem 0 0 0;
   font-size: 1.25rem;
+}
+
+.notification {
+  display: block;
+  margin: 1rem 0;
+  padding: 0.5rem 1rem;
+  border: solid thin #ffff99;
+  border-radius: 0.75rem;
+  background-color: #ffcc00;
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+i {
+  position: relative;
+  top: 0.15rem;
+  left: 0rem;
+  font-size: 1rem;
 }
 
 .boldened {
@@ -36,4 +56,13 @@ button {
   font-size: 1.25rem;
   outline: none;
   cursor: pointer;
+}
+
+.decks-container a {
+  display: block;
+  margin-top: 1rem;
+  text-decoration: underline;
+  color: #000;
+  font-size: 1.25rem;
+  font-weight: bold;
 }

@@ -1,6 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { FLAService } from '../../../services/fla.service';
+import { User } from '../../../models/user.model';
 import { Flashcard } from '../../../models/flashcard.model';
 import * as moment from 'moment';
 
@@ -12,7 +14,8 @@ import * as moment from 'moment';
 export class StudyFlashcardsComponent implements OnInit {
 
   @Input() flashcards: Flashcard[];
-  @Input() isSRSEnabled: boolean;
+
+  user: User;
 
   totalFlashcards: number;
   index: number;
@@ -23,13 +26,20 @@ export class StudyFlashcardsComponent implements OnInit {
     difficulty: ['', Validators.required]
   });
 
-  constructor(private formBuilder: FormBuilder, private FLAService: FLAService) { }
+  constructor(private formBuilder: FormBuilder, private FLAService: FLAService, private router: Router) { }
 
   ngOnInit(): void {
     this.index = 0;
     this.totalFlashcards = this.flashcards.length;
     this.canBeFlipped = false;
+    this.getCurrentUser();
     this.getFlashcard(this.flashcards[this.index].FlashcardId);
+  }
+
+  getCurrentUser() {
+    this.FLAService.getUserById().subscribe((results: User) => {
+      this.user = results;
+    });
   }
 
   getFlashcard(id) {
@@ -53,7 +63,7 @@ export class StudyFlashcardsComponent implements OnInit {
   }
 
   next() {
-    if (this.isSRSEnabled && this.currentFlashcard.Visibility) {
+    if (this.user.SRS && this.currentFlashcard.Visibility) {
       let difficulty = this.ratingsForm.value.difficulty;
 
       let currentTimestamp = moment().unix();
@@ -78,12 +88,9 @@ export class StudyFlashcardsComponent implements OnInit {
 
       this.getFlashcard(this.flashcards[this.index].FlashcardId);
     }
-
   }
 
   updateFlashcard(flashcard) {
-    console.log('updating flashcard..');
-
     this.FLAService.updateFlashcard(flashcard).subscribe(results => {
       console.log(results);
     });
@@ -95,6 +102,12 @@ export class StudyFlashcardsComponent implements OnInit {
 
     this.FLAService.addStudySession(studySessionDate, this.totalFlashcards).subscribe(results => {
       console.log('Added session succesfully');
+    });
+  }
+
+  reloadDashboard() {
+    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+      this.router.navigate(['/dashboard']);
     });
   }
 

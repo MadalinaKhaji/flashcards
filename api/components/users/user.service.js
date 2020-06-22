@@ -54,7 +54,7 @@ const createUser = (data) => {
 const getUserById = (id) => {
   return new Promise((resolve, reject) => {
     pool.query(
-      `SELECT UserId, FirstName, LastName, Username, Email FROM users WHERE UserId = ?`,
+      `SELECT users.UserId, FirstName, LastName, Username, Email, user_settings.SRS FROM users LEFT JOIN user_settings ON users.UserId = user_settings.UserId WHERE users.UserId = ?`,
       [id],
       (error, results, fields) => {
         if (error) {
@@ -103,6 +103,17 @@ const updateUserById = (data) => {
   });
 };
 
+const updateSRSByUserId = (data) => {
+  return new Promise((resolve, reject) => {
+    pool.query(`UPDATE user_settings SET SRS=? WHERE UserId = ?`, [data.SRS, data.id], (error, results, fields) => {
+      if (error) {
+        return reject(error);
+      }
+      return resolve(results);
+    });
+  });
+};
+
 const deleteUserById = (id) => {
   return new Promise((resolve, reject) => {
     pool.query(`DELETE FROM users WHERE UserId = ?`, [id], (error, results, fields) => {
@@ -136,5 +147,6 @@ module.exports = {
   getUserByEmail: getUserByEmail,
   getSRSByUserId: getSRSByUserId,
   updateUserById: updateUserById,
+  updateSRSByUserId: updateSRSByUserId,
   deleteUserById: deleteUserById,
 };

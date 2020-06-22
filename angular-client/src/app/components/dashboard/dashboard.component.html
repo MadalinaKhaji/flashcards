@@ -1,19 +1,15 @@
 <div class="container">
-  <div
-    *ngIf="
-      (noOfFlashcardsToStudyUsingSRS || noOfFlashcardsNotYetStudied) &&
-      !isHidden
-    "
-    class="container-notifications"
-  >
-    <header>Study Notifications</header>
+  <div *ngIf="!isHidden" class="wrapper">
+    <header>Dashboard</header>
+
+    <p class="greeting">Hello, {{ user.FirstName }}!</p>
 
     <p *ngIf="noOfFlashcardsToStudyUsingSRS" class="notification">
-      You have
+      <i class="material-icons">notifications_active</i> You have
       <span class="boldened"
         >{{ noOfFlashcardsToStudyUsingSRS }} flashcards</span
       >
-      to study
+      to study!
     </p>
 
     <button
@@ -25,7 +21,7 @@
     </button>
 
     <p *ngIf="noOfFlashcardsNotYetStudied" class="notification">
-      You have
+      <i class="material-icons">notifications_active</i> You have
       <span class="boldened"
         >{{ noOfFlashcardsNotYetStudied }} new flashcards</span
       >
@@ -39,15 +35,18 @@
     >
       Study new flashcards
     </button>
+
+    <div class="decks-container">
+      <a [routerLink]="['/decks']"> Go to your decks </a>
+    </div>
   </div>
+
+  <app-decks *ngIf="!isHidden"></app-decks>
+
+  <app-study-activity *ngIf="!isHidden"></app-study-activity>
 
   <app-study-flashcards
     *ngIf="isHidden"
     [flashcards]="selectedFlashcardsToStudyToday"
-    [isSRSEnabled]="isSRSEnabled"
   ></app-study-flashcards>
-
-  <app-decks *ngIf="!isHidden"></app-decks>
-
-  <!-- <app-study-activity *ngIf="!isHidden"></app-study-activity> -->
 </div>

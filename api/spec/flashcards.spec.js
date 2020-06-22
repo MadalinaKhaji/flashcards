@@ -8,13 +8,13 @@ describe('FLA API Flashcards', function () {
   it('should post classic flashcard using valid parameters', function (done) {
     axios
       .post(baseURL, {
-        note: 'ASTRAty',
+        note: 'Included in next exam',
         formatType: 'text',
         sourceURL: '',
-        deckId: 2,
-        front: 'Whats good?',
-        back: 'I dont know',
-        tags: ['pfsfehy', 'lefature', 'csefe art'],
+        deckId: 1,
+        front: 'What year was the Notre Dame built?',
+        back: '1163',
+        tags: ['history', 'art', 'midterm'],
       })
       .then((response) => {
         expect(response.status).toEqual(201);

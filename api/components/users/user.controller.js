@@ -62,7 +62,7 @@ const getUserById = (req, res) => {
       if (!results) {
         return res.status(404).json({ message: 'User not found' });
       }
-      return res.status(200).json({ data: results });
+      return res.status(200).send(results);
     })
     .catch((error) => {
       console.log(error);
@@ -132,6 +132,25 @@ const updateUserById = (req, res) => {
         });
     });
   });
+};
+
+const updateSRSByUserId = (req, res) => {
+  if (!req.body.id) {
+    return res.status(400).json({ message: 'User id is required' });
+  }
+
+  // if (!req.body.SRS) {
+  //   return res.status(400).json({ message: 'SRS is required' });
+  // }
+
+  userService
+    .updateSRSByUserId(req.body)
+    .then((results) => {
+      return res.status(200).send(results);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
 };
 
 const deleteUserById = (req, res) => {
@@ -223,6 +242,7 @@ module.exports = {
   getUserById: getUserById,
   getSRSByUserId: getSRSByUserId,
   updateUserById: updateUserById,
+  updateSRSByUserId: updateSRSByUserId,
   deleteUserById: deleteUserById,
   login: login,
 };

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FLAService } from '../../services/fla.service';
+import { User } from '../../models/user.model';
 import { Flashcard } from '../../models/flashcard.model';
-import { UserSettings } from '../../models/user.setting.model';
 import * as moment from 'moment';
 
 @Component({
@@ -12,8 +12,8 @@ import * as moment from 'moment';
 
 export class DashboardComponent implements OnInit {
 
+  user: User;
   flashcards: Flashcard[];
-  isSRSEnabled: boolean;
   isHidden: boolean;
 
   noOfFlashcardsNotYetStudied: number;
@@ -27,13 +27,13 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.isHidden = false;
-    this.getSRSStatus();
+    this.getCurrentUser();
     this.getFlashcards();
   }
 
-  getSRSStatus() {
-    this.FLAService.getSRSByUserId().subscribe((results: UserSettings) => {
-      this.isSRSEnabled = results.SRS;
+  getCurrentUser() {
+    this.FLAService.getUserById().subscribe((results: User) => {
+      this.user = results;
     });
   }
 
@@ -41,45 +41,62 @@ export class DashboardComponent implements OnInit {
     this.FLAService.getFlashcardsByUserId().subscribe(flashcards => {
       this.flashcards = flashcards;
 
-      this.checkFlashcardsStatus()
+      this.checkFlashcardsStatus();
     });
   }
 
   checkFlashcardsStatus() {
-    let noOfFlashcardsNotYetStudied = 0;
-    let noOfFlashcardsToStudyUsingSRS = 0;
-
     this.flashcards.forEach(flashcard => {
-      // If the flashcard hasnt been reviewed before add it to todays flashcards to review 
+      // check if there are new flashcards to study 
       if (flashcard.LastStudyDate === null) {
-        noOfFlashcardsNotYetStudied++;
         this.newFlashcardsToStudyToday.push(flashcard);
-      } else if (this.isSRSEnabled) {
-        let dueDate = this.calculateFlashcardDueDate(flashcard.StudyInterval, flashcard.LastStudyDate);
-        console.log(dueDate);
-        let currentTimestamp = moment().unix();//in seconds
-        let currentDate = moment(currentTimestamp * 1000).format("YYYY-MM-DD HH:mm:ss");
-        if (moment(dueDate).isAfter(currentDate)) {
-          noOfFlashcardsToStudyUsingSRS++;
+      } else if (this.user.SRS) {
+        // check if SRS is enabled then calculate due date 
+        let dueDate = this.calculateFlashcardDueDate(flashcard.Difficulty, flashcard.LastStudyDate);
+        //Convert current time to moment object with utc time
+        let currentDate = moment.utc(moment(), 'YYYY-MM-DD[T]HH:mm[Z]');
+
+        if (moment(currentDate).isAfter(dueDate)) {
           this.flashcardsToStudyToday.push(flashcard);
         }
       }
     });
 
-    if (noOfFlashcardsNotYetStudied > 0) {
-      this.noOfFlashcardsNotYetStudied = noOfFlashcardsNotYetStudied;
+    if (this.newFlashcardsToStudyToday.length > 0) {
+      this.noOfFlashcardsNotYetStudied = this.newFlashcardsToStudyToday.length;
     }
 
-    if (noOfFlashcardsToStudyUsingSRS > 0) {
-      this.noOfFlashcardsToStudyUsingSRS = noOfFlashcardsToStudyUsingSRS;
+    if (this.flashcardsToStudyToday.length > 0) {
+      this.noOfFlashcardsToStudyUsingSRS = this.flashcardsToStudyToday.length;
     }
-
   }
 
-  calculateFlashcardDueDate(studyInterval, lastStudyDate) {
+  determineStudyInterval(difficulty, lastStudyDate) {
+    let studyInterval = 0;
+
+    if (difficulty) {
+      studyInterval = this.fibonacci(difficulty);
+    }
+
+    if (lastStudyDate) {
+
+    }
+
+    return studyInterval;
+  };
+
+  fibonacci(n) {
+    return n < 1 ? 0 : n <= 2 ? 1 : this.fibonacci(n - 1) + this.fibonacci(n - 2);
+  };
+
+  calculateFlashcardDueDate(difficulty, lastStudyDate) {
+    let studyInterval = this.determineStudyInterval(difficulty, lastStudyDate);
+
+    console.log(studyInterval);
+
     let dueDate = moment(lastStudyDate, "YYYY-MM-DD HH:mm:ss").add(studyInterval, 'd').format("YYYY-MM-DD HH:mm:ss");
 
-    return dueDate;
+    return moment.utc(dueDate, 'YYYY-MM-DD[T]HH:mm[Z]');
   }
 
   initStudy(option) {

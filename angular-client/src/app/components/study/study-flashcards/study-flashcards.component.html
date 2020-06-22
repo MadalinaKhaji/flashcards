@@ -8,7 +8,7 @@
     <div *ngIf="canBeFlipped && currentFlashcard" class="flashcard-bottom">
       <p>{{ currentFlashcard.Back }}</p>
       <p>{{ currentFlashcard.Blank }}</p>
-      <form *ngIf="isSRSEnabled" [formGroup]="ratingsForm">
+      <form *ngIf="user.SRS" [formGroup]="ratingsForm">
         <span class="boldened"> Difficulty </span> <br /><br />
         <label
           ><input type="radio" formControlName="difficulty" value="0" /> 0
@@ -33,11 +33,13 @@
           Next
         </button>
       </form>
-      <button *ngIf="!isSRSEnabled" click="next()" type="button">Next</button>
+      <button *ngIf="!user.SRS" click="next()" type="button">Next</button>
     </div>
     <div *ngIf="!currentFlashcard">
       <p>You finished</p>
-      <a routerLink="/dashboard">Back to Dashboard</a>
+      <button type="button" (click)="reloadDashboard()">
+        Back to Dashboard
+      </button>
     </div>
   </div>
 </div>

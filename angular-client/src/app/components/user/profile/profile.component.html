@@ -1,1 +1,18 @@
-<p>profile works!</p>
+<div class="container">
+  <div class="wrapper">
+    <header>Settings</header>
+    <div class="grid-container">
+      <p class="switch-text">Study using Spaced Repetition</p>
+      <label class="switch">
+        <input
+          type="checkbox"
+          *ngIf="isSRSEnabled"
+          checked
+          (click)="toggleSRS()"
+        />
+        <input type="checkbox" *ngIf="!isSRSEnabled" (click)="toggleSRS()" />
+        <span class="slider round"></span>
+      </label>
+    </div>
+  </div>
+</div>
