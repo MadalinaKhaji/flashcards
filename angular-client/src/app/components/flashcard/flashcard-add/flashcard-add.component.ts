@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 import { FLAService } from './../../../services/fla.service';
 
@@ -28,7 +28,7 @@ export class FlashcardAddComponent implements OnInit {
     tag: ['']
   });
 
-  constructor(private formBuilder: FormBuilder, private FLAService: FLAService, private route: ActivatedRoute) { }
+  constructor(private formBuilder: FormBuilder, private FLAService: FLAService, private route: ActivatedRoute, private router: Router) { }
 
   ngOnInit(): void {
     this.currentFormatType = 'text';
@@ -54,6 +54,13 @@ export class FlashcardAddComponent implements OnInit {
 
     this.FLAService.addFlashcard(flashcardToBeAdded).subscribe(() => {
       console.log('Flashcard added succesfully..');
+      this.reloadAddFlashcard();
+    });
+  }
+
+  reloadAddFlashcard() {
+    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+      this.router.navigate(['/flashcard-add', this.route.snapshot.params['id']]);
     });
   }
 }

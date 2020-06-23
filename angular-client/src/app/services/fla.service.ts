@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { User } from '../models/user.model';
 import { Deck } from '../models/deck.model';
 import { Flashcard } from '../models/flashcard.model';
+import { StudySession } from '../models/session.model';
 
 @Injectable({
   providedIn: 'root'
@@ -115,5 +116,11 @@ export class FLAService {
     let currentUserId = this.extractUserId();
 
     return this.http.post(`${this.FLAAPIUrl}/users/sessions`, { userId: currentUserId, studySessionDate: studySessionDate, studiedFlashcardsNo: studiedFlashcardsNo });
+  }
+
+  getStudySessionsByUserId(): Observable<StudySession[]> {
+    let currentUserId = this.extractUserId();
+
+    return this.http.get<StudySession[]>(`${this.FLAAPIUrl}/users/sessions/${currentUserId}`);
   }
 }

@@ -140,12 +140,24 @@ const createStudySession = (data) => {
   });
 };
 
+const getStudySessionsByUserId = (id) => {
+  return new Promise((resolve, reject) => {
+    pool.query(`SELECT * FROM study_sessions WHERE UserId = ?`, [id], (error, results, fields) => {
+      if (error) {
+        return reject(error);
+      }
+      return resolve(results);
+    });
+  });
+};
+
 module.exports = {
   createUser: createUser,
   createStudySession: createStudySession,
   getUserById: getUserById,
   getUserByEmail: getUserByEmail,
   getSRSByUserId: getSRSByUserId,
+  getStudySessionsByUserId: getStudySessionsByUserId,
   updateUserById: updateUserById,
   updateSRSByUserId: updateSRSByUserId,
   deleteUserById: deleteUserById,

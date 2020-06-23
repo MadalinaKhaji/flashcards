@@ -63,13 +63,22 @@ export class StudyFlashcardsComponent implements OnInit {
   }
 
   next() {
-    if (this.user.SRS && this.currentFlashcard.Visibility) {
+    if (this.user.SRS) {
+      // Update difficulty and last study date 
       let difficulty = this.ratingsForm.value.difficulty;
 
       let currentTimestamp = moment().unix();
       let latestStudyDate = moment(currentTimestamp * 1000).format("YYYY-MM-DD HH:mm:ss");
 
-      this.currentFlashcard.Difficulty = difficulty;
+      this.currentFlashcard.Difficulty = +difficulty;
+      this.currentFlashcard.LastStudyDate = latestStudyDate;
+
+      this.updateFlashcard(this.currentFlashcard);
+    } else {
+      // Update last study date 
+      let currentTimestamp = moment().unix();
+      let latestStudyDate = moment(currentTimestamp * 1000).format("YYYY-MM-DD HH:mm:ss");
+
       this.currentFlashcard.LastStudyDate = latestStudyDate;
 
       this.updateFlashcard(this.currentFlashcard);

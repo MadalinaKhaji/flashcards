@@ -1,37 +1,27 @@
 <div class="container">
-  <h2>Flashcards</h2>
-  <a [routerLink]="['/flashcard-add', id]">Add flashcard</a>
-  <br />
-  <table class="table table-striped">
-    <thead>
-      <tr>
-        <th scope="col">Front</th>
-        <th scope="col">Back</th>
-        <th scope="col">Context</th>
-        <th scope="col">Blank</th>
-        <th scope="col">Note</th>
-        <th scope="col">Visibility</th>
-        <th scope="col">Favorite</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let flashcard of flashcards">
-        <td scope="row">{{ flashcard.Front }}</td>
-        <td scope="row">{{ flashcard.Back }}</td>
-        <td scope="row">{{ flashcard.Context }}</td>
-        <td scope="row">{{ flashcard.Blank }}</td>
-        <td scope="row">{{ flashcard.Note }}</td>
-        <td scope="row">{{ flashcard.Visibility }}</td>
-        <td scope="row">{{ flashcard.Favorite }}</td>
-        <td scope="row">
-          <a
-            *ngIf="flashcard.FlashcardId"
-            [routerLink]="['/flashcard-detail', flashcard.FlashcardId]"
-          >
-            Details
-          </a>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <div class="wrapper">
+    <nav>
+      <a routerLink="/decks">All Flashcards</a>
+      <a [routerLink]="['/flashcard-add', id]">Add Flashcard</a>
+    </nav>
+    <div class="flashcards-container">
+      <div *ngFor="let flashcard of flashcards" class="flashcard">
+        <p *ngIf="flashcard.Front" id="grid-item-frontend">
+          {{ flashcard.Front }}
+        </p>
+        <p *ngIf="flashcard.Context" id="grid-item-frontend">
+          {{ flashcard.Context }}
+        </p>
+        <a
+          *ngIf="flashcard.FlashcardId"
+          id="grid-item-details"
+          [routerLink]="['/flashcard-detail', flashcard.FlashcardId]"
+        >
+          Details
+        </a>
+        <button id="grid-item-favorite" type="button">Toggle Favorite</button>
+        <button id="grid-item-visible" type="button">Toggle Visibility</button>
+      </div>
+    </div>
+  </div>
 </div>

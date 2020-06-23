@@ -1,7 +1,7 @@
 <div class="container">
   <div class="wrapper">
     <nav>
-      <a routerLink="/dashboard">All Decks</a>
+      <a routerLink="/decks">All Decks</a>
       <a routerLink="/deck-add">Add Deck</a>
     </nav>
     <div class="container-decks">
@@ -24,7 +24,7 @@
         </a>
         <a
           id="grid-item-study"
-          *ngIf="deck.DeckId"
+          *ngIf="deck.DeckId && !user.SRS"
           [routerLink]="['/study-deck', deck.DeckId]"
           >Study Deck</a
         >

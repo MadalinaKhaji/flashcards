@@ -52,12 +52,20 @@ export class DashboardComponent implements OnInit {
         this.newFlashcardsToStudyToday.push(flashcard);
       } else if (this.user.SRS) {
         // check if SRS is enabled then calculate due date 
-        let dueDate = this.calculateFlashcardDueDate(flashcard.Difficulty, flashcard.LastStudyDate);
-        //Convert current time to moment object with utc time
-        let currentDate = moment.utc(moment(), 'YYYY-MM-DD[T]HH:mm[Z]');
+        if (flashcard.Difficulty && flashcard.LastStudyDate) {
+          let dueDate = this.calculateFlashcardDueDate(flashcard.Difficulty, flashcard.LastStudyDate);
+          //Convert current time to moment object with utc time
+          let currentDate = moment.utc(moment(), 'YYYY-MM-DD[T]HH:mm[Z]');
 
-        if (moment(currentDate).isAfter(dueDate)) {
-          this.flashcardsToStudyToday.push(flashcard);
+          // let currentDate = "2020-07-01T07:59:58Z"
+
+          if (moment(currentDate).isAfter(dueDate)) {
+            this.flashcardsToStudyToday.push(flashcard);
+          }
+        } else {
+          if (!flashcard.Difficulty && flashcard.LastStudyDate) {
+            this.flashcardsToStudyToday.push(flashcard);
+          }
         }
       }
     });
@@ -71,6 +79,14 @@ export class DashboardComponent implements OnInit {
     }
   }
 
+  calculateFlashcardDueDate(difficulty, lastStudyDate) {
+    let studyInterval = this.determineStudyInterval(difficulty, lastStudyDate);
+
+    let dueDate = moment(lastStudyDate, "YYYY-MM-DD HH:mm:ss").add(studyInterval, 'd').format("YYYY-MM-DD HH:mm:ss");
+
+    return moment.utc(dueDate, 'YYYY-MM-DD[T]HH:mm[Z]');
+  }
+
   determineStudyInterval(difficulty, lastStudyDate) {
     let studyInterval = 0;
 
@@ -79,7 +95,7 @@ export class DashboardComponent implements OnInit {
     }
 
     if (lastStudyDate) {
-
+      // DISCUSS
     }
 
     return studyInterval;
@@ -88,16 +104,6 @@ export class DashboardComponent implements OnInit {
   fibonacci(n) {
     return n < 1 ? 0 : n <= 2 ? 1 : this.fibonacci(n - 1) + this.fibonacci(n - 2);
   };
-
-  calculateFlashcardDueDate(difficulty, lastStudyDate) {
-    let studyInterval = this.determineStudyInterval(difficulty, lastStudyDate);
-
-    console.log(studyInterval);
-
-    let dueDate = moment(lastStudyDate, "YYYY-MM-DD HH:mm:ss").add(studyInterval, 'd').format("YYYY-MM-DD HH:mm:ss");
-
-    return moment.utc(dueDate, 'YYYY-MM-DD[T]HH:mm[Z]');
-  }
 
   initStudy(option) {
     if (option === 'studyNewFlashcards') {

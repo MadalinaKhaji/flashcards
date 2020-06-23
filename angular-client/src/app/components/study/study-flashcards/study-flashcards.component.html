@@ -33,7 +33,7 @@
           Next
         </button>
       </form>
-      <button *ngIf="!user.SRS" click="next()" type="button">Next</button>
+      <button *ngIf="!user.SRS" type="button" (click)="next()">Next</button>
     </div>
     <div *ngIf="!currentFlashcard">
       <p>You finished</p>

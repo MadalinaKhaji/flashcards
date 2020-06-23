@@ -37,7 +37,9 @@ export class FlashcardDetailComponent implements OnInit {
 
   getFlashcardDetails(id) {
     this.FLAService.getFlashcardById(id).subscribe(flashcard => {
-      this.flashcard = flashcard
+      this.flashcard = flashcard;
+
+      this.flashcard.FlashcardId = +id;
 
       console.log(this.flashcard);
     });

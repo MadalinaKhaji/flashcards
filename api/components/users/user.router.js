@@ -14,6 +14,8 @@ router.get('/:id', validateToken, userController.getUserById);
 
 router.get('/settings/:id', validateToken, userController.getSRSByUserId);
 
+router.get('/sessions/:id', validateToken, userController.getStudySessionsByUserId);
+
 router.patch('/', validateToken, userController.updateUserById);
 
 router.patch('/settings', validateToken, userController.updateSRSByUserId);

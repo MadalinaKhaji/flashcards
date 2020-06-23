@@ -236,11 +236,33 @@ const createStudySession = (req, res) => {
     });
 };
 
+const getStudySessionsByUserId = (req, res) => {
+  if (!req.params.id) {
+    return res.status(400).json({ message: 'User id is required' });
+  }
+
+  userService
+    .getStudySessionsByUserId(req.params.id)
+    .then((results) => {
+      if (!results) {
+        return res.status(404).json({ message: 'Sessions not found' });
+      }
+
+      return res.status(200).send(results);
+    })
+    .catch((error) => {
+      console.log(error);
+
+      return res.status(500).send('Error occurred..');
+    });
+};
+
 module.exports = {
   createUser: createUser,
   createStudySession: createStudySession,
   getUserById: getUserById,
   getSRSByUserId: getSRSByUserId,
+  getStudySessionsByUserId: getStudySessionsByUserId,
   updateUserById: updateUserById,
   updateSRSByUserId: updateSRSByUserId,
   deleteUserById: deleteUserById,

@@ -51,7 +51,7 @@ import { StudyFlashcardsComponent } from './components/study/study-flashcards/st
     StudySrsComponent,
     StudyActivityComponent,
     StudyDeckComponent,
-    StudyFlashcardsComponent
+    StudyFlashcardsComponent,
   ],
   imports: [
     BrowserModule,

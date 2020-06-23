@@ -8,7 +8,7 @@
     <div *ngIf="canBeFlipped && currentFlashcard" class="flashcard-bottom">
       <p>{{ currentFlashcard.Back }}</p>
       <p>{{ currentFlashcard.Blank }}</p>
-      <button click="next()" type="button">Next</button>
+      <button type="button" (click)="next()">Next</button>
     </div>
   </div>
   <div *ngIf="!currentFlashcard">
