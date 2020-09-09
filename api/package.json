@@ -11,18 +11,18 @@
   "author": "maddie",
   "license": "MIT",
   "dependencies": {
-    "bcrypt": "^4.0.1",
+    "bcrypt": "^5.0.0",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
-    "moment": "^2.26.0",
+    "moment": "^2.27.0",
     "mysql": "^2.18.1"
   },
   "devDependencies": {
     "axios": "^0.19.2",
-    "jasmine": "^3.5.0",
+    "jasmine": "^3.6.1",
     "nodemon": "^2.0.4",
-    "nyc": "^15.0.1"
+    "nyc": "^15.1.0"
   }
 }
