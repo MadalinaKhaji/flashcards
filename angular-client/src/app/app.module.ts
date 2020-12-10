@@ -27,6 +27,9 @@ import { StudySrsComponent } from './components/study/study-srs/study-srs.compon
 import { StudyActivityComponent } from './components/study/study-activity/study-activity.component';
 import { StudyDeckComponent } from './components/study/study-deck/study-deck.component';
 import { StudyFlashcardsComponent } from './components/study/study-flashcards/study-flashcards.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+import { MatSliderModule } from '@angular/material/slider';
 
 @NgModule({
   declarations: [
@@ -59,6 +62,8 @@ import { StudyFlashcardsComponent } from './components/study/study-flashcards/st
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
+    BrowserAnimationsModule,
+    MatSliderModule,
   ],
   providers: [
     httpInterceptorProviders
